@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "C:\react native project\Smart_Vehicle_Procurement_System_using_Blockchain_Technology\test_django.py", line 10, in <module>
+    [v.price for v in Vehicle.objects.all()]
+  File "C:\Users\saisantosh\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\db\models\query.py", line 386, in __iter__
+    self._fetch_all()
+  File "C:\Users\saisantosh\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\db\models\query.py", line 1954, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\saisantosh\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\db\models\query.py", line 125, in __iter__
+    for row in compiler.results_iter(results):
+  File "C:\Users\saisantosh\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\db\models\sql\compiler.py", line 1541, in apply_converters
+    value = converter(value, expression, connection)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\saisantosh\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\db\backends\sqlite3\operations.py", line 346, in converter
+    return create_decimal(value).quantize(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]

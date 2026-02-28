@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Vehicle Procurement System - Admin Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-50%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-slideIn { animation: slideIn 1.2s ease-out; }
+        .animate-fadeIn { animation: fadeIn 2.5s ease-in; }
+        .animate-pulseGlow { animation: pulseGlow 3s infinite; }
+        .animate-spin { animation: spin 12s linear infinite; }
+        .hero-bg {
+            background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .card-hover:hover { transform: translateY(-10px); transition: transform 0.4s ease, box-shadow 0.4s ease; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
+        .nav-button { transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+        .nav-button:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+        #three-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100vh; opacity: 0.7; }
+        .section-bg {
+            background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .overlay { background: rgba(0, 0, 0, 0.65); }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #e5e7eb;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color:  #e5e7eb;
+        }
+        td {
+            font-size: 0.95rem;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 9999px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 640px) {
+            table thead {
+                display: none;
+            }
+            table tr {
+                display: block;
+                margin-bottom: 1rem;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            }
+            table td {
+                display: block;
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+                border: none;
+            }
+            table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans relative text-white">
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Header with Navigation -->
+    <header class="hero-bg text-white py-8 relative z-10 overlay">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold flex items-center">
+                <img src="https://img.icons8.com/fluency/48/ffffff/sports-car.png" alt="Car Icon" class="w-10 h-10 mr-3 animate-spin">
+                Admin Dashboard
+            </h1>
+            <div class="space-x-6">
+                <a href="adminHome" class="nav-button bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-indigo-700">Home</a>
+                <a href="userdetails" class="nav-button bg-gradient-to-r from-green-500 to-teal-600 text-white py-2 px-6 rounded-full hover:from-green-600 hover:to-teal-700">Buyer Details</a>
+                <a href="sellerdetails" class="nav-button bg-gradient-to-r from-green-500 to-teal-600 text-white py-2 px-6 rounded-full hover:from-green-600 hover:to-teal-700">seller Details</a>
+
+                <a href="log" class="nav-button bg-gradient-to-r from-red-500 to-pink-600 text-white py-2 px-6 rounded-full hover:from-red-600 hover:to-pink-700">Logout</a>
+            </div>
+        </nav>
+        <div class="container mx-auto text-center mt-12">
+            <h1 class="text-5xl md:text-7xl font-bold animate-slideIn bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">Admin Control Center</h1>
+            <p class="mt-6 text-xl md:text-2xl animate-fadeIn text-gray-200">Manage Vehicles and Users with Blockchain-Powered Efficiency</p>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard Section -->
+    <section id="admin-dashboard" class="py-20 relative z-10 section-bg overlay">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 animate-fadeIn bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">User Management</h2>
+            <div class="glass-effect p-8 rounded-xl shadow-xl card-hover animate-slideIn">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-users text-3xl text-cyan-300 mr-3"></i>
+                    <h3 class="text-2xl font-semibold text-gray-200">Manage Seller Details</h3>
+                </div>
+                <p class="text-gray-300 mb-8">Oversee user accounts, update statuses, and ensure secure access to the platform.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Login ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td data-label="ID">{{ user.id }}</td>
+                                <td data-label="Login ID">{{ user.loginid }}</td>
+                                <td data-label="Name">{{ user.name }}</td>
+                                <td data-label="Email">{{ user.email }}</td>
+                                <td data-label="Status">{{ user.status }}</td>
+                                <td data-label="Action">
+                                    {% if user.status == 'Active' %}
+                                    <a href="Sdeactivate_user?id={{user.id}}" class="btn bg-gradient-to-r from-red-500 to-pink-600 text-white">Deactivate</a>
+                                    {% else %}
+                                    <a href="Sactivate_user?id={{user.id}}" class="btn bg-gradient-to-r from-green-500 to-teal-600 text-white">Activate</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br><br><br><br><br><br>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-white relative z-10">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-400">© 2025 Smart Vehicle Procurement System. All rights reserved.</p>
+            <div class="mt-4 space-x-6">
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Privacy Policy</a>
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js Script for 3D Animation -->
+    <script>
+        // Three.js Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Create a 3D vehicle-inspired animation (floating and flowing car-like shapes)
+        const geometry = new THREE.BoxGeometry(1.5, 0.5, 0.3);
+        const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d0, 0xf9cb9c, 0x96ce82, 0xffa1cf, 0x6b7280];
+        const vehicles = [];
+
+        for (let i = 0; i < 50; i++) {
+            const material = new THREE.MeshBasicMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                wireframe: true
+            });
+            const vehicle = new THREE.Mesh(geometry, material);
+            vehicle.position.set(
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 25,
+                (Math.random() - 0.5) * 25
+            );
+            vehicle.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            scene.add(vehicle);
+            vehicles.push({
+                mesh: vehicle,
+                velocity: new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                )
+            });
+        }
+
+        camera.position.z = 30;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            vehicles.forEach(({ mesh, velocity }) => {
+                mesh.position.add(velocity);
+                mesh.rotation.x += 0.03;
+                mesh.rotation.y += 0.03;
+                mesh.scale.set(1 + 0.2 * Math.sin(Date.now() * 0.003), 1, 1);
+                if (mesh.position.x > 20) mesh.position.x = -20;
+                if (mesh.position.x < -20) mesh.position.x = 20;
+                if (mesh.position.y > 15) mesh.position.y = -15;
+                if (mesh.position.y < -15) mesh.position.y = 15;
+                if (mesh.position.z > 15) mesh.position.z = -15;
+                if (mesh.position.z < -15) mesh.position.z = 15;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.animate-slideIn, .animate-fadeIn').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('animate-slideIn');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

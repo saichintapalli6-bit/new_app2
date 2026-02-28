@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Vehicle Procurement System - Seller Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-50%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-slideIn { animation: slideIn 1.2s ease-out; }
+        .animate-fadeIn { animation: fadeIn 2.5s ease-in; }
+        .animate-pulseGlow { animation: pulseGlow 3s infinite; }
+        .animate-spin { animation: spin 12s linear infinite; }
+        .hero-bg {
+            background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .card-hover:hover { transform: translateY(-10px); transition: transform 0.4s ease, box-shadow 0.4s ease; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
+        .nav-button { transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+        .nav-button:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+        #three-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100vh; opacity: 0.7; }
+        .section-bg {
+            background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .overlay { background: rgba(0, 0, 0, 0.65); }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans relative text-white">
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Header with Navigation -->
+    <header class="hero-bg text-white py-8 relative z-10 overlay">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold flex items-center">
+                <img src="https://img.icons8.com/fluency/48/ffffff/sports-car.png" alt="Car Icon" class="w-10 h-10 mr-3 animate-spin">
+                Smart Vehicle Procurement
+                        </h1>
+            <div class="space-x-6">
+                <a href="sellerHome" class="nav-button bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-indigo-700">Home</a>
+                <a href="addVehicle" class="nav-button bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 px-6 rounded-full hover:from-purple-600 hover:to-indigo-700">Add Vehicle</a>
+                <a href="vehicleHistory" class="nav-button bg-gradient-to-r from-cyan-400 to-blue-500 text-white py-2 px-6 rounded-full hover:from-cyan-500 hover:to-blue-600">History</a>
+                <a href="log" class="nav-button bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 px-6 rounded-full hover:from-pink-600 hover:to-purple-700">Logout</a>
+            </div>
+        </nav>
+        
+    </header>
+
+    <!-- Seller Benefits Section -->
+    <section id="add-vehicle" class="py-20 bg-black bg-opacity-70 relative z-10 overlay">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-600 animate-fadeIn">Your Vehicles</h2>
+            {% if vehicles %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for vehicle in vehicles %}
+                <div class="p-6 glass-effect rounded-xl shadow-xl animate-slideIn">
+                    <h3 class="text-xl font-semibold mb-4 text-purple-300">{{ vehicle.vehicle_number }}</h3>
+                    <div class="mb-4">
+                        {% if vehicle.picture %}
+                        <img src="{{ vehicle.picture.url }}" alt="{{ vehicle.vehicle_number }} Picture" class="w-full h-40 object-cover rounded-lg">
+                        {% else %}
+                        <p class="text-gray-400 text-sm">No picture available</p>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-gray-300 text-sm"><strong>Accidents History:</strong></p>
+                        <p class="text-gray-200 text-sm">{{ vehicle.accidents_history|default:"No accidents reported" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-gray-300 text-sm"><strong>Ownership Documents:</strong></p>
+                        {% if vehicle.ownership_documents %}
+                        <a href="{{ vehicle.ownership_documents.url }}" class="text-cyan-400 hover:text-cyan-300 text-sm" target="_blank">View Document</a>
+                        {% else %}
+                        <p class="text-gray-400 text-sm">No documents uploaded</p>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-gray-300 text-sm"><strong>Price:</strong> ${{ vehicle.price }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-gray-300 text-sm"><strong>Block Hash:</strong></p>
+                        <p class="text-gray-200 text-xs break-all">{{ vehicle.block_hash|default:"Not on blockchain" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center text-gray-200 text-lg animate-fadeIn">No vehicles registered yet. Add a vehicle to get started!</p>
+            <div class="text-center mt-6">
+                <a href="addVehicle" class="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-3 px-6 rounded-full hover:from-purple-600 hover:to-indigo-700 font-semibold transition-all animate-pulseGlow">Add Vehicle</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-white relative z-10">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-400">© 2025 Smart Vehicle Procurement System. All rights reserved.</p>
+            <div class="mt-4 space-x-6">
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Privacy Policy</a>
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('picture').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-32 h-32 object-cover mx-auto mt-4 rounded-lg';
+                    document.getElementById('picture').after(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    <!-- Three.js Script for 3D Animation -->
+    <script>
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.BoxGeometry(1.5, 0.5, 0.3);
+        const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d0, 0xf9cb9c, 0x96ce82, 0xffa1cf, 0x6b7280];
+        const vehicles = [];
+
+        for (let i = 0; i < 50; i++) {
+            const material = new THREE.MeshBasicMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                wireframe: true
+            });
+            const vehicle = new THREE.Mesh(geometry, material);
+            vehicle.position.set(
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 25,
+                (Math.random() - 0.5) * 25
+            );
+            vehicle.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            scene.add(vehicle);
+            vehicles.push({
+                mesh: vehicle,
+                velocity: new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                )
+            });
+        }
+
+        camera.position.z = 30;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            vehicles.forEach(({ mesh, velocity }) => {
+                mesh.position.add(velocity);
+                mesh.rotation.x += 0.03;
+                mesh.rotation.y += 0.03;
+                mesh.scale.set(1 + 0.2 * Math.sin(Date.now() * 0.003), 1, 1);
+                if (mesh.position.x > 20) mesh.position.x = -20;
+                if (mesh.position.x < -20) mesh.position.x = 20;
+                if (mesh.position.y > 15) mesh.position.y = -15;
+                if (mesh.position.y < -15) mesh.position.y = 15;
+                if (mesh.position.z > 15) mesh.position.z = -15;
+                if (mesh.position.z < -15) mesh.position.z = 15;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.animate-slideIn, .animate-fadeIn').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('animate-slideIn');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

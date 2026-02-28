@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Vehicle Procurement System - Buyer Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-50%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-slideIn { animation: slideIn 1.2s ease-out; }
+        .animate-fadeIn { animation: fadeIn 2.5s ease-in; }
+        .animate-pulseGlow { animation: pulseGlow 3s infinite; }
+        .animate-spin { animation: spin 12s linear infinite; }
+        .hero-bg {
+            background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .card-hover:hover { transform: translateY(-10px); transition: transform 0.4s ease, box-shadow 0.4s ease; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
+        .nav-button { transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+        .nav-button:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+        #three-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100vh; opacity: 0.7; }
+        .section-bg {
+            background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+        }
+        .overlay { background: rgba(0, 0, 0, 0.65); }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans relative text-white">
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Header with Navigation -->
+    <header class="hero-bg text-white py-8 relative z-10 overlay">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold flex items-center">
+                <img src="https://img.icons8.com/fluency/48/ffffff/sports-car.png" alt="Car Icon" class="w-10 h-10 mr-3 animate-spin">
+                Smart Vehicle Procurement
+            </h1>
+            <div class="space-x-6">
+                <a href="/" class="nav-button bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-6 rounded-full hover:from-blue-600 hover:to-indigo-700">Home</a>
+                <a href="buyerLoginForm" class="nav-button bg-gradient-to-r from-green-500 to-teal-600   text-white py-2 px-6 rounded-full hover:from-green-600 hover:to-teal-700">Buyer</a>
+                
+                <a href="buyerRegisterForm" class="nav-button bg-gradient-to-r from-green-400 to-teal-500 text-white py-2 px-6 rounded-full hover:from-red-500 hover:to-teal-600">Buyer Register</a>
+                <a href="adminLoginForm" class="nav-button bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 px-6 rounded-full hover:from-yellow-600 hover:to-orange-700">Admin</a>
+
+                <a href="sellerLoginForm" class="nav-button bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 px-6 rounded-full hover:from-purple-600 hover:to-indigo-700">Seller</a>
+                <a href="sellerRegisterForm" class="nav-button bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 px-6 rounded-full hover:from-pink-600 hover:to-purple-700">Seller Register</a>
+         
+            </div>
+            
+            
+        </nav>
+    </header>
+    <br><br><br><br><br>
+
+    <!-- Buyer Registration Section -->
+    <section id="buyer-register" class="py-20 bg-black bg-opacity-70 relative z-10 overlay">
+        <div class="container mx-auto px-4">
+            <ul class="messages">
+                {% if messages %}
+                <ul class="messages" style="list-style: none; padding: 0;">
+                    {% for message in messages %}
+                    <li style="margin: 10px 0; padding: 12px; border-radius: 5px; 
+                           color: white; 
+                           background-color:black">
+                        {{ message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </ul>
+            <div class="max-w-md mx-auto p-8 glass-effect rounded-xl shadow-xl animate-fadeIn">
+                <h2 class="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-500">Buyer Login</h2>
+                <form method="post" action="buyerLoginCheck">
+                    {% csrf_token %}
+                  
+                    <div class="mb-6">
+                        <label for="loginid" class="block text-gray-300 text-sm font-semibold mb-2">Login ID</label>
+                        <input type="text" id="loginid" name="loginid" maxlength="30" placeholder="Enter Login ID" class="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    </div>
+                  
+                    <div class="mb-6">
+                        <label for="password" class="block text-gray-300 text-sm font-semibold mb-2">Password</label>
+                        <input type="password" id="password" name="password" maxlength="128" placeholder="Enter Password" class="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-green-400 to-teal-500 text-white rounded-full hover:from-green-500 hover:to-teal-600 font-semibold transition-all animate-pulseGlow">Login</button>
+                </form>
+                <p class="text-center text-gray-300 mt-6">Don't have an account? <a href="buyerRegisterForm" class="text-green-400 hover:text-green-300 transition">Register here</a></p>
+            </div>
+        </div>
+    </section>
+    <br><br><br><br><br>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 relative z-10 section-bg overlay">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 animate-fadeIn bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">Why Our System Stands Out</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="p-8 glass-effect rounded-xl shadow-xl card-hover animate-slideIn">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/blockchain-technology.png" alt="Blockchain Icon" class="w-14 h-14 mx-auto mb-6 animate-spin">
+                    <h3 class="text-2xl font-semibold mb-4 text-cyan-300">Transparent Transactions</h3>
+                    <p class="text-gray-200">Leverage blockchain for secure, traceable, and tamper-proof transactions, ensuring trust in every deal.</p>
+                </div>
+                <div class="p-8 glass-effect rounded-xl shadow-xl card-hover animate-slideIn" style="animation-delay: 0.2s;">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/contract.png" alt="Contract Icon" class="w-14 h-14 mx-auto mb-6 animate-spin">
+                    <h3 class="text-2xl font-semibold mb-4 text-green-300">Smart Contracts</h3>
+                    <p class="text-gray-200">Streamline procurement with automated, error-free smart contracts, minimizing paperwork and delays.</p>
+                </div>
+                <div class="p-8 glass-effect rounded-xl shadow-xl card-hover animate-slideIn" style="animation-delay: 0.4s;">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/shield.png" alt="Shield Icon" class="w-14 h-14 mx-auto mb-6 animate-spin">
+                    <h3 class="text-2xl font-semibold mb-4 text-purple-300">Decentralized Security</h3>
+                    <p class="text-gray-200">Safeguard sensitive data with decentralized storage, reducing risks of hacks and fraud.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative z-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 animate-fadeIn bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-500">How It Works</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-12 md:space-y-0 md:space-x-16">
+                <div class="text-center animate-slideIn">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/car.png" alt="Car Icon" class="w-16 h-16 mx-auto mb-6 animate-pulseGlow">
+                    <h3 class="text-2xl font-semibold text-yellow-400">Register Vehicle</h3>
+                    <p class="text-gray-300">Securely log vehicle details on the blockchain for immutable records.</p>
+                </div>
+                <div class="text-center animate-slideIn" style="animation-delay: 0.2s;">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/document.png" alt="Document Icon" class="w-16 h-16 mx-auto mb-6 animate-pulseGlow">
+                    <h3 class="text-2xl font-semibold text-cyan-400">Execute Smart Contract</h3>
+                    <p class="text-gray-300">Automate agreements with predefined terms for seamless transactions.</p>
+                </div>
+                <div class="text-center animate-slideIn" style="animation-delay: 0.4s;">
+                    <img src="https://img.icons8.com/fluency/48/ffffff/check.png" alt="Check Icon" class="w-16 h-16 mx-auto mb-6 animate-pulseGlow">
+                    <h3 class="text-2xl font-semibold text-green-400">Track & Verify</h3>
+                    <p class="text-gray-300">Monitor and verify transactions in real-time with complete transparency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white relative z-10 section-bg overlay">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6 animate-fadeIn bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-orange-500">Drive the Future of Procurement</h2>
+            <p class="text-xl mb-8 animate-fadeIn text-gray-200">Embrace blockchain technology for smarter, safer vehicle transactions.</p>
+            <a href="#contact" class="inline-block bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 px-8 rounded-full hover:from-pink-600 hover:to-purple-700 transition animate-pulseGlow text-lg font-semibold">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-white relative z-10">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-400">© 2025 Smart Vehicle Procurement System. All rights reserved.</p>
+            <div class="mt-4 space-x-6">
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Privacy Policy</a>
+                <a href="#" class="text-cyan-400 hover:text-cyan-300 transition">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js Script for 3D Animation -->
+    <script>
+        // Three.js Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Create a 3D vehicle-inspired animation (floating and flowing car-like shapes)
+        const geometry = new THREE.BoxGeometry(1.5, 0.5, 0.3);
+        const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d0, 0xf9cb9c, 0x96ce82, 0xffa1cf, 0x6b7280];
+        const vehicles = [];
+
+        for (let i = 0; i < 50; i++) {
+            const material = new THREE.MeshBasicMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                wireframe: true
+            });
+            const vehicle = new THREE.Mesh(geometry, material);
+            vehicle.position.set(
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 25,
+                (Math.random() - 0.5) * 25
+            );
+            vehicle.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            scene.add(vehicle);
+            vehicles.push({
+                mesh: vehicle,
+                velocity: new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                )
+            });
+        }
+
+        camera.position.z = 30;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            vehicles.forEach(({ mesh, velocity }) => {
+                mesh.position.add(velocity);
+                mesh.rotation.x += 0.03;
+                mesh.rotation.y += 0.03;
+                mesh.scale.set(1 + 0.2 * Math.sin(Date.now() * 0.003), 1, 1);
+                if (mesh.position.x > 20) mesh.position.x = -20;
+                if (mesh.position.x < -20) mesh.position.x = 20;
+                if (mesh.position.y > 15) mesh.position.y = -15;
+                if (mesh.position.y < -15) mesh.position.y = 15;
+                if (mesh.position.z > 15) mesh.position.z = -15;
+                if (mesh.position.z < -15) mesh.position.z = 15;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.animate-slideIn, .animate-fadeIn').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('animate-slideIn');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
