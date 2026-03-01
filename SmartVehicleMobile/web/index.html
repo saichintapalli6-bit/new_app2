@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover" />
+  <title>Smart Vehicle Procurement System</title>
+  <meta name="description" content="Blockchain-powered vehicle procurement platform" />
+
+  <style>
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Full viewport for ALL browsers ─────────────────────────── */
+    html {
+      width: 100%;
+      height: 100%;
+      /* Edge/IE fix */
+      height: 100vh;
+      background-color: #060714;
+      overflow-x: hidden;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      /* Edge/IE fix – use both */
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #060714;
+      overflow-x: hidden;
+      -ms-overflow-style: none;
+    }
+
+    /* ── Root container – React Native Web mounts here ──────────── */
+    #root {
+      /* Standard flex */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+
+      /* Always fill full window */
+      width: 100%;
+      width: 100vw;
+      height: 100%;
+      min-height: 100vh;
+
+      /* Edge-specific: force fill */
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background-color: #060714;
+      overflow: hidden;
+    }
+
+    /* ── Fix React Native Web inner containers ───────────────────── */
+    #root>div,
+    #root>div>div {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+    }
+
+    /* ── Text size adjust ────────────────────────────────────────── */
+    div,
+    span,
+    p,
+    a,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    /* ── Tap highlight ───────────────────────────────────────────── */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Inputs ──────────────────────────────────────────────────── */
+    input,
+    textarea {
+      outline: none;
+    }
+
+    /* ── Scrollbar (Chrome/Edge Chromium) ────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #22d3ee44;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #22d3ee88;
+    }
+
+    /* ── Loading splash (shows before JS hydrates) ───────────────── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: #060714;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      z-index: 9999;
+      -webkit-transition: opacity 0.4s ease;
+      -moz-transition: opacity 0.4s ease;
+      transition: opacity 0.4s ease;
+    }
+
+    #splash.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #splash svg {
+      animation: spin 1s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Loading spinner (hidden once React mounts) -->
+  <div id="splash">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="20" stroke="#1e3a5f" stroke-width="4" />
+      <path d="M24 4 A20 20 0 0 1 44 24" stroke="#60a5fa" stroke-width="4" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <!-- React Native Web mounts here -->
+  <div id="root"></div>
+
+  <script>
+    // Hide splash once React has rendered
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var splash = document.getElementById('splash');
+        if (splash) {
+          splash.classList.add('hidden');
+          setTimeout(function () { splash.remove(); }, 500);
+        }
+      }, 600);
+    });
+
+    // Edge/IE polyfill: ensure root fills screen on resize
+    function fixRootHeight() {
+      var root = document.getElementById('root');
+      if (root) {
+        root.style.height = window.innerHeight + 'px';
+        root.style.minHeight = window.innerHeight + 'px';
+      }
+    }
+    fixRootHeight();
+    window.addEventListener('resize', fixRootHeight);
+    window.addEventListener('orientationchange', fixRootHeight);
+  </script>
+</body>
+
+</html>

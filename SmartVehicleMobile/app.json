@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "SmartVehicleMobile",
+    "slug": "SmartVehicleMobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.chsaisantosh.SmartVehicleMobile",
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "Smart Vehicle Procurement System",
+      "description": "Blockchain-powered vehicle procurement platform"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ffd95fcd-5256-4505-8337-c26fc0f49a0b"
+      }
+    },
+    "owner": "chsaisantosh"
+  }
+}
