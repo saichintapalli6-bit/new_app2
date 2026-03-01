@@ -33,6 +33,9 @@ class sellerRegisteredTable(models.Model):
     mobile = models.CharField(max_length=10, validators=[validate_mobile])
     password = models.CharField(max_length=128, validators=[validate_password])
     status = models.CharField(max_length=20, default='waiting')  # Default value added here
+    bank_account_number = models.CharField(max_length=50, null=True, blank=True)
+    ifsc_code = models.CharField(max_length=20, null=True, blank=True)
+    bank_name = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.loginid
@@ -40,6 +43,7 @@ from django.db import models
 
 class Vehicle(models.Model):
     vehicle_number = models.CharField(max_length=50, unique=True, validators=[validate_vehicle_number])
+    seller_id = models.IntegerField(null=True, blank=True)
     picture = models.ImageField(upload_to='vehicles/', null=True, blank=True)
     accidents_history = models.TextField(null=True, blank=True)
     ownership_documents = models.FileField(upload_to='documents/', null=True, blank=True)

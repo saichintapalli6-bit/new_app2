@@ -37,6 +37,7 @@ class userRegisteredTable(models.Model):
 class Vehicle1(models.Model):
     purchased_at = models.DateTimeField(null=True, blank=True)
     vehicle_number = models.CharField(max_length=50, unique=True)
+    seller_id = models.IntegerField(null=True, blank=True)
     picture = models.ImageField(upload_to='vehicles/', null=True, blank=True)
     accidents_history = models.TextField(null=True, blank=True)
     ownership_documents = models.FileField(upload_to='documents/', null=True, blank=True)
@@ -54,9 +55,12 @@ class Vehicle1(models.Model):
 class Transaction(models.Model):
     vehicle_number = models.CharField(max_length=50)
     buyer_id = models.IntegerField()
+    seller_id = models.IntegerField(null=True, blank=True)
     buyer_name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     hash_code = models.CharField(max_length=100)
+    buyer_transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    seller_transaction_id = models.CharField(max_length=100, null=True, blank=True)
     status = models.CharField(max_length=20, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 

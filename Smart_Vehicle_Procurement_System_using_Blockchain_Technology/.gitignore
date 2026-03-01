@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+
+# Media uploads (don't push to git)
+media/
+
+# Environment variables
+.env
+*.env
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test files
+test.py
+test_django.py
+out.txt
+tmp_out.txt
+trace.txt
+trace8.txt
+traceback.html
+error.html
+ip.txt

@@ -89,5 +89,10 @@ urlpatterns = [
     # Seller APIs
     path('api/seller/add-vehicle', api.api_add_vehicle, name='api_add_vehicle'),
     path('api/seller/vehicle-history', api.api_vehicle_history, name='api_vehicle_history'),
+    path('api/seller/update-transaction', api.api_seller_update_transaction, name='api_seller_update_transaction'),
+    # Buyer APIs
+    path('api/buyer/transactions', api.api_buyer_transactions, name='api_buyer_transactions'),
+    # Extra Admin API
+    path('api/admin/delete-user', api.api_admin_delete_user, name='api_admin_delete_user'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

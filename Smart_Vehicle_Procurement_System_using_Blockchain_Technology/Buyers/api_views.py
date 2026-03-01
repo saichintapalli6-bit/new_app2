@@ -27,7 +27,12 @@ def api_login(request):
             user = sellerRegisteredTable.objects.get(loginid=loginid, password=password)
             if user.status != 'Active':
                 return Response({'error': 'Account not active. Wait for admin approval.'}, status=status.HTTP_403_FORBIDDEN)
-            return Response({'id': user.id, 'name': user.name, 'email': user.email, 'role': 'seller'})
+            return Response({
+                'id': user.id, 'name': user.name, 'email': user.email, 'role': 'seller',
+                'bank_account_number': user.bank_account_number or '',
+                'ifsc_code': user.ifsc_code or '',
+                'bank_name': user.bank_name or ''
+            })
         elif role == 'admin':
             if loginid == 'admin' and password == 'admin':
                 return Response({'id': 0, 'name': 'Administrator', 'email': 'admin@system.com', 'role': 'admin'})
@@ -72,11 +77,18 @@ def api_register(request):
             return Response({'message': 'Buyer registered! Wait for admin approval.'}, status=status.HTTP_201_CREATED)
         elif role == 'seller':
             from seller.models import sellerRegisteredTable
+            bank_account_number = request.data.get('bank_account_number', '').strip()
+            ifsc_code = request.data.get('ifsc_code', '').strip()
+            bank_name = request.data.get('bank_name', '').strip()
+            
             if sellerRegisteredTable.objects.filter(loginid=loginid).exists():
                 return Response({'error': 'Login ID already taken.'}, status=status.HTTP_400_BAD_REQUEST)
             if sellerRegisteredTable.objects.filter(email=email).exists():
                 return Response({'error': 'Email already registered.'}, status=status.HTTP_400_BAD_REQUEST)
-            seller = sellerRegisteredTable(name=name, email=email, loginid=loginid, mobile=mobile, password=password, status='waiting')
+            seller = sellerRegisteredTable(
+                name=name, email=email, loginid=loginid, mobile=mobile, password=password, status='waiting',
+                bank_account_number=bank_account_number, ifsc_code=ifsc_code, bank_name=bank_name
+            )
             try:
                 seller.full_clean()
                 seller.save()
@@ -134,6 +146,26 @@ def api_admin_activate_seller(request):
         return Response({'message': f'Seller {action}d successfully.', 'status': user.status})
     except sellerRegisteredTable.DoesNotExist:
         return Response({'error': 'Seller not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def api_admin_delete_user(request):
+    """Delete a buyer or seller"""
+    user_id = request.data.get('user_id') or request.data.get('id')
+    role = request.data.get('role')
+    try:
+        if role == 'buyer':
+            user = userRegisteredTable.objects.get(id=user_id)
+            user.delete()
+        elif role == 'seller':
+            from seller.models import sellerRegisteredTable
+            user = sellerRegisteredTable.objects.get(id=user_id)
+            user.delete()
+        else:
+            return Response({'error': 'Invalid role.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': f'{role.capitalize()} deleted successfully.'})
+    except Exception as e:
+        return Response({'error': 'User not found or deletion failed.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 # ─── SELLER APIs ──────────────────────────────────────────────────────────────
@@ -217,6 +249,7 @@ def api_add_vehicle(request):
     try:
         vehicle = Vehicle(
             vehicle_number=vehicle_number,
+            seller_id=seller_id,
             accidents_history=accidents_history,
             price=price_val,
             block_hash=block_hash,
@@ -230,6 +263,7 @@ def api_add_vehicle(request):
 
         vehicle1 = Vehicle1(
             vehicle_number=vehicle_number,
+            seller_id=seller_id,
             accidents_history=accidents_history,
             price=price_val,
             block_hash=block_hash,
@@ -261,8 +295,12 @@ def api_add_vehicle(request):
 
 @api_view(['GET'])
 def api_vehicle_history(request):
-    """Get all vehicles listed by sellers"""
-    vehicles = Vehicle.objects.all().order_by('-id')
+    """Get all vehicles listed by sellers, filtered by seller_id if given"""
+    seller_id = request.GET.get('seller_id')
+    if seller_id:
+        vehicles = Vehicle.objects.filter(seller_id=seller_id).order_by('-id')
+    else:
+        vehicles = Vehicle.objects.all().order_by('-id')
     data = []
     for v in vehicles:
         # Determine picture URL: external URL (http) or Django media URL
@@ -317,6 +355,10 @@ def api_purchase_vehicle(request):
     vehicle_number = request.data.get('vehicle_number')
     buyer_id = request.data.get('buyer_id')
     buyer_name = request.data.get('buyer_name')
+    buyer_transaction_id = request.data.get('buyer_transaction_id', '').strip()
+    
+    if not buyer_transaction_id:
+        return Response({'error': 'Transaction ID is required'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         vehicle = Vehicle.objects.get(vehicle_number=vehicle_number, status='available')
@@ -336,9 +378,11 @@ def api_purchase_vehicle(request):
         Transaction.objects.create(
             vehicle_number=vehicle_number,
             buyer_id=buyer_id,
+            seller_id=vehicle.seller_id,
             buyer_name=buyer_name,
             price=vehicle.price,
             hash_code=block_hash,
+            buyer_transaction_id=buyer_transaction_id,
             status='pending'
         )
         
@@ -357,6 +401,8 @@ def api_admin_transactions(request):
         'buyer_name': t.buyer_name,
         'price': str(t.price),
         'hash_code': t.hash_code,
+        'buyer_transaction_id': t.buyer_transaction_id or '',
+        'seller_transaction_id': t.seller_transaction_id or '',
         'status': t.status,
     } for t in transactions]
     return Response(data)
@@ -384,3 +430,45 @@ def api_admin_approve_transaction(request):
         return Response({'error': 'Transaction not found or already processed.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def api_buyer_transactions(request):
+    buyer_id = request.GET.get('buyer_id')
+    if not buyer_id:
+        return Response({'error': 'buyer_id required'}, status=status.HTTP_400_BAD_REQUEST)
+    from Buyers.models import Transaction
+    transactions = Transaction.objects.filter(buyer_id=buyer_id).order_by('-created_at')
+    data = [{
+        'id': t.id,
+        'vehicle_number': t.vehicle_number,
+        'price': str(t.price),
+        'buyer_name': t.buyer_name,
+        'hash_code': t.hash_code,
+        'buyer_transaction_id': t.buyer_transaction_id or '',
+        'seller_transaction_id': t.seller_transaction_id or '',
+        'status': t.status,
+        'created_at': str(t.created_at)
+    } for t in transactions]
+    return Response(data)
+
+@api_view(['POST'])
+def api_seller_update_transaction(request):
+    from Buyers.models import Transaction
+    hash_code = request.data.get('hash_code', '').strip()
+    seller_transaction_id = request.data.get('seller_transaction_id', '').strip()
+    
+    if not seller_transaction_id:
+        return Response({'error': 'Seller Transaction ID required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not hash_code:
+        return Response({'error': 'Block hash code is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    try:
+        t = Transaction.objects.get(hash_code=hash_code)
+        t.seller_transaction_id = seller_transaction_id
+        t.save()
+        return Response({'message': 'Transaction ID updated successfully.'})
+    except Transaction.DoesNotExist:
+        # Return the hash we got, to help with debugging
+        return Response({'error': f'Transaction not found for hash: {hash_code[:20]}...'}, status=status.HTTP_404_NOT_FOUND)
+
