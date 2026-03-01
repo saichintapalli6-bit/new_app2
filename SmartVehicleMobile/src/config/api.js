@@ -1,16 +1,16 @@
 import { Platform } from 'react-native';
 
 const LOCAL_IP = '192.168.1.120';
-const RENDER_URL = 'https://new-app-6zc1.onrender.com';
+const RENDER_URL = 'https://new-app2-1.onrender.com';
 
-// Auto-detect: use localhost for web (local dev), Render for mobile
-export const API_BASE =
-    Platform.OS === 'web'
-        ? 'http://localhost:8000'
-        : `http://${LOCAL_IP}:8000`;
+const USE_PRODUCTION = false; // Manual override
 
-// To switch to production (Render), comment above and uncomment below:
-// export const API_BASE = RENDER_URL;
+// Web deployment auto-detection
+const isDeployedWeb = Platform.OS === 'web' && typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+
+export const API_BASE = (USE_PRODUCTION || isDeployedWeb)
+    ? RENDER_URL
+    : (Platform.OS === 'web' ? 'http://localhost:8000' : `http://${LOCAL_IP}:8000`);
 
 export const ENDPOINTS = {
     LOGIN: `${API_BASE}/api/login`,
