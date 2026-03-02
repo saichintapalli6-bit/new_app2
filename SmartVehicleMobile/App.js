@@ -15,11 +15,16 @@ import WebViewScreen from './src/screens/WebViewScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  // Mobile (APK) should start with WebView wrapper
+  // Web (Browser) should start with the normal Home screen
+  const isWeb = Platform.OS === 'web';
+  const initialRoute = isWeb ? "Home" : "WebView";
+
   return (
     <GestureHandlerRootView style={styles.root}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="WebView"
+          initialRouteName={initialRoute}
           screenOptions={{
             headerShown: false,
             cardStyle: { flex: 1, backgroundColor: '#060714' },
