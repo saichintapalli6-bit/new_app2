@@ -10,6 +10,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import BuyerDashboard from './src/screens/BuyerDashboard';
 import SellerDashboard from './src/screens/SellerDashboard';
 import AdminDashboard from './src/screens/AdminDashboard';
+import WebViewScreen from './src/screens/WebViewScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,12 +19,16 @@ export default function App() {
     <GestureHandlerRootView style={styles.root}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="WebView"
           screenOptions={{
             headerShown: false,
             cardStyle: { flex: 1, backgroundColor: '#060714' },
           }}
         >
+          {/* WebView Screen (Initial) */}
+          <Stack.Screen name="WebView" component={WebViewScreen} />
+
+          {/* Core App Screens (Optional) */}
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
