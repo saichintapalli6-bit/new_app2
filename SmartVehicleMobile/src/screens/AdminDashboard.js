@@ -600,16 +600,19 @@ const styles = StyleSheet.create({
     statusText: { fontSize: 12, fontWeight: '700' },
 
     activateBtn: {
-        paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8,
-        backgroundColor: 'rgba(16,185,129,0.15)', borderWidth: 1, borderColor: 'rgba(16,185,129,0.4)', flex: 1, alignItems: 'center'
+        paddingHorizontal: 8, paddingVertical: 7, borderRadius: 8,
+        backgroundColor: 'rgba(16,185,129,0.15)', borderWidth: 1, borderColor: 'rgba(16,185,129,0.4)',
+        width: 85, alignItems: 'center'
     },
     deactivateBtn: {
-        paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8,
-        backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 1, borderColor: 'rgba(239,68,68,0.3)', flex: 1, alignItems: 'center'
+        paddingHorizontal: 8, paddingVertical: 7, borderRadius: 8,
+        backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 1, borderColor: 'rgba(239,68,68,0.3)',
+        width: 85, alignItems: 'center'
     },
     deleteBtn: {
         paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8,
-        backgroundColor: 'rgba(220,38,38,0.15)', borderWidth: 1, borderColor: 'rgba(220,38,38,0.4)', flex: 1, alignItems: 'center'
+        backgroundColor: 'rgba(220,38,38,0.15)', borderWidth: 1, borderColor: 'rgba(220,38,38,0.4)',
+        width: 65, alignItems: 'center'
     },
     actionBtnText: { color: '#fff', fontSize: 11, fontWeight: '700' },
 

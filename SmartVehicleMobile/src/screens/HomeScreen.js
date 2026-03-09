@@ -27,8 +27,14 @@ const HomeScreen = ({ navigation }) => {
                     <TouchableOpacity style={[styles.navBtn, styles.navBtnActive]} onPress={() => navigation.navigate('Home')}>
                         <Text style={styles.navBtnActiveText}>Home</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.navBtn, styles.navBtnBlue]} onPress={() => navigation.navigate('Login', { role: 'buyer' })}>
-                        <Text style={styles.navBtnText}>Sign In</Text>
+                    <TouchableOpacity style={[styles.navBtn, styles.navBtnGreen]} onPress={() => navigation.navigate('Login', { role: 'buyer' })}>
+                        <Text style={styles.navBtnText}>Buyer</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.navBtn, styles.navBtnBlue]} onPress={() => navigation.navigate('Login', { role: 'seller' })}>
+                        <Text style={styles.navBtnText}>Seller</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.navBtn, styles.navBtnOrange]} onPress={() => navigation.navigate('Login', { role: 'admin' })}>
+                        <Text style={styles.navBtnText}>Admin</Text>
                     </TouchableOpacity>
                 </View>
             </View>
