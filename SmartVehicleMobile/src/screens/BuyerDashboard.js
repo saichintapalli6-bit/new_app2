@@ -180,12 +180,12 @@ const BuyerDashboard = ({ route, navigation }) => {
             />
             <LinearGradient colors={['#111827', '#1f2937']} style={styles.header}>
                 <View style={styles.headerRow}>
-                    <View>
-                        <Text style={styles.welcome}>Hello,</Text>
-                        <Text style={styles.userName}>{user.name}</Text>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.welcome}>Hello, <Text style={styles.userName}>{user.name}</Text></Text>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                        <LogOut color="#f87171" size={24} />
+                    <TouchableOpacity style={styles.logoutBtnSm} onPress={() => navigation.navigate('Home')}>
+                        <LogOut color="#f87171" size={18} />
+                        <Text style={styles.logoutTextSm}>Exit</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -222,8 +222,7 @@ const BuyerDashboard = ({ route, navigation }) => {
                     data={vehicles}
                     renderItem={renderVehicle}
                     keyExtractor={(item) => item.vehicle_number || String(item.id)}
-                    numColumns={2}
-                    columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 20 }}
+                    numColumns={isWeb ? 2 : 1}
                     contentContainerStyle={styles.list}
                     ListEmptyComponent={
                         <Text style={styles.emptyText}>No vehicles available at the moment.</Text>
@@ -278,11 +277,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#0a1628',
     },
     header: {
-        paddingTop: 60,
-        paddingBottom: 25,
+        paddingTop: isWeb ? 40 : 50,
+        paddingBottom: 20,
         paddingHorizontal: 20,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
     },
     headerRow: {
         flexDirection: 'row',
@@ -291,13 +290,25 @@ const styles = StyleSheet.create({
     },
     welcome: {
         color: '#9ca3af',
-        fontSize: 16,
+        fontSize: 14,
     },
     userName: {
         color: '#fff',
-        fontSize: 24,
+        fontSize: 18,
         fontWeight: 'bold',
     },
+    logoutBtnSm: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        backgroundColor: 'rgba(248,113,113,0.1)',
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(248,113,113,0.2)',
+    },
+    logoutTextSm: { color: '#f87171', fontSize: 12, fontWeight: 'bold' },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -320,7 +331,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.1)',
-        width: '48%',
+        width: isWeb ? '48%' : '100%',
     },
     cardImage: {
         width: '100%',

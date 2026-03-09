@@ -182,17 +182,16 @@ const AdminDashboard = ({ route, navigation }) => {
             {/* NAVBAR */}
             <View style={styles.navbar}>
                 <View style={styles.navLeft}>
-                    <Shield color="#f59e0b" size={22} />
-                    <Text style={styles.navTitle}>Admin Dashboard</Text>
-                    <View style={styles.adminBadge}><Text style={styles.adminBadgeText}>Administrator</Text></View>
+                    <Shield color="#f59e0b" size={20} />
+                    <Text style={styles.navTitle} numberOfLines={1}>Admin</Text>
+                    <View style={styles.adminBadge}><Text style={styles.adminBadgeText}>Admin</Text></View>
                 </View>
                 <View style={styles.navRight}>
                     <TouchableOpacity style={styles.refreshBtn} onPress={fetchAll}>
-                        <RefreshCcw color="#94a3b8" size={16} />
-                        <Text style={styles.refreshBtnText}>Refresh</Text>
+                        <RefreshCcw color="#94a3b8" size={14} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
-                        <LogOut color="#ef4444" size={16} />
+                        <LogOut color="#ef4444" size={14} />
                         <Text style={styles.logoutBtnText}>Logout</Text>
                     </TouchableOpacity>
                 </View>
@@ -275,117 +274,121 @@ const AdminDashboard = ({ route, navigation }) => {
                         />
                     </View>
 
-                    {/* Column Headers */}
-                    <View style={styles.colHeader}>
-                        {activeTab === 'transactions' ? (
-                            ['#', 'Vehicle', 'Buyer', 'Price', 'Status', 'Hash Code', 'Action'].map((col, i) => (
-                                <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 5 && { flex: 2 }, i === 6 && { width: 130, textAlign: 'center' }]}>{col}</Text>
-                            ))
-                        ) : activeTab === 'vehicles' ? (
-                            ['#', 'Vehicle Number', 'Price', 'Accidents', 'Action'].map((col, i) => (
-                                <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 4 && { width: 100, textAlign: 'center' }]}>{col}</Text>
-                            ))
-                        ) : (
-                            ['#', 'Login ID', 'Name', 'Email', 'Mobile', 'Status', 'Action'].map((col, i) => (
-                                <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 6 && { width: 180, textAlign: 'center' }]}>{col}</Text>
-                            ))
-                        )}
-                    </View>
+                    {/* Scrollable Table Content */}
+                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                        <View style={{ minWidth: isWeb ? '100%' : 700 }}>
+                            {/* Column Headers */}
+                            <View style={styles.colHeader}>
+                                {activeTab === 'transactions' ? (
+                                    ['#', 'Vehicle', 'Buyer', 'Price', 'Status', 'Hash Code', 'Action'].map((col, i) => (
+                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 5 && { flex: 2 }, i === 6 && { width: 130, textAlign: 'center' }]}>{col}</Text>
+                                    ))
+                                ) : activeTab === 'vehicles' ? (
+                                    ['#', 'Vehicle Number', 'Price', 'Accidents', 'Action'].map((col, i) => (
+                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 4 && { width: 100, textAlign: 'center' }]}>{col}</Text>
+                                    ))
+                                ) : (
+                                    ['#', 'Login ID', 'Name', 'Email', 'Mobile', 'Status', 'Action'].map((col, i) => (
+                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 6 && { width: 180, textAlign: 'center' }]}>{col}</Text>
+                                    ))
+                                )}
+                            </View>
 
-                    {/* Rows */}
-                    {loading ? (
-                        <View style={styles.loadingRow}>
-                            <ActivityIndicator color="#f59e0b" size="large" />
-                            <Text style={styles.loadingText}>Loading data...</Text>
-                        </View>
-                    ) : filtered.length === 0 ? (
-                        <View style={styles.emptyRow}>
-                            <Text style={styles.emptyText}>No {activeTab} found</Text>
-                        </View>
-                    ) : activeTab === 'transactions' ? (
-                        filtered.map((t, idx) => (
-                            <View key={t.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
-                                <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                <Text style={[styles.cell, styles.cellLoginId]}>{t.vehicle_number}</Text>
-                                <Text style={[styles.cell, styles.cellName]}>{t.buyer_name}</Text>
-                                <Text style={[styles.cell, styles.cellEmail]}>₹{t.price}</Text>
-                                <View style={[styles.cell, { width: 90 }]}>
-                                    <View style={[styles.statusBadge, t.status === 'approved' ? styles.statusActive : styles.statusWaiting]}>
-                                        <Text style={[styles.statusText, t.status === 'approved' ? { color: '#10b981' } : { color: '#f59e0b' }]}>
-                                            {t.status}
-                                        </Text>
+                            {/* Rows */}
+                            {loading ? (
+                                <View style={styles.loadingRow}>
+                                    <ActivityIndicator color="#f59e0b" size="large" />
+                                    <Text style={styles.loadingText}>Loading data...</Text>
+                                </View>
+                            ) : filtered.length === 0 ? (
+                                <View style={styles.emptyRow}>
+                                    <Text style={styles.emptyText}>No {activeTab} found</Text>
+                                </View>
+                            ) : activeTab === 'transactions' ? (
+                                filtered.map((t, idx) => (
+                                    <View key={t.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
+                                        <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
+                                        <Text style={[styles.cell, styles.cellLoginId]}>{t.vehicle_number}</Text>
+                                        <Text style={[styles.cell, styles.cellName]}>{t.buyer_name}</Text>
+                                        <Text style={[styles.cell, styles.cellEmail]}>₹{t.price}</Text>
+                                        <View style={[styles.cell, { width: 90 }]}>
+                                            <View style={[styles.statusBadge, t.status === 'approved' ? styles.statusActive : styles.statusWaiting]}>
+                                                <Text style={[styles.statusText, t.status === 'approved' ? { color: '#10b981' } : { color: '#f59e0b' }]}>
+                                                    {t.status}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <Text style={[styles.cell, { flex: 2, fontSize: 10, color: '#334155' }]} numberOfLines={1}>{t.hash_code}</Text>
+                                        <View style={[styles.cell, { width: 130 }]}>
+                                            {t.status === 'pending' && (
+                                                <TouchableOpacity
+                                                    style={[styles.actionBtn, styles.activateBtn]}
+                                                    onPress={() => openVerifyModal(t)}
+                                                >
+                                                    <Text style={styles.actionBtnText}>Verify</Text>
+                                                </TouchableOpacity>
+                                            )}
+                                        </View>
                                     </View>
-                                </View>
-                                <Text style={[styles.cell, { flex: 2, fontSize: 10, color: '#334155' }]} numberOfLines={1}>{t.hash_code}</Text>
-                                <View style={[styles.cell, { width: 130 }]}>
-                                    {t.status === 'pending' && (
-                                        <TouchableOpacity
-                                            style={[styles.actionBtn, styles.activateBtn]}
-                                            onPress={() => openVerifyModal(t)}
-                                        >
-                                            <Text style={styles.actionBtnText}>Verify</Text>
-                                        </TouchableOpacity>
-                                    )}
-                                </View>
-                            </View>
-                        ))
-                    ) : activeTab === 'vehicles' ? (
-                        filtered.map((v, idx) => (
-                            <View key={v.vehicle_number} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
-                                <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                <Text style={[styles.cell, styles.cellLoginId]}>{v.vehicle_number}</Text>
-                                <Text style={[styles.cell, { color: '#10b981' }]}>₹{v.price}</Text>
-                                <Text style={[styles.cell, { color: '#94a3b8' }]}>{v.accidents_history || 'None'}</Text>
-                                <View style={[styles.cell, { width: 100, alignItems: 'center' }]}>
-                                    {/* Action placeholder for vehicles if needed */}
-                                    <Text style={{ color: '#64748b', fontSize: 12 }}>View Only</Text>
-                                </View>
-                            </View>
-                        ))
-                    ) : (
-                        filtered.map((u, idx) => (
-                            <View key={u.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
-                                <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                <Text style={[styles.cell, styles.cellLoginId]}>{u.loginid}</Text>
-                                <Text style={[styles.cell, styles.cellName]}>{u.name}</Text>
-                                <Text style={[styles.cell, styles.cellEmail]}>{u.email}</Text>
-                                <Text style={[styles.cell, styles.cellMobile]}>{u.mobile || '—'}</Text>
-                                <View style={[styles.cell, { width: 90 }]}>
-                                    <View style={[
-                                        styles.statusBadge,
-                                        u.status === 'Active' ? styles.statusActive :
-                                            u.status === 'Inactive' ? styles.statusInactive :
-                                                styles.statusWaiting
-                                    ]}>
-                                        <Text style={[
-                                            styles.statusText,
-                                            u.status === 'Active' ? { color: '#10b981' } :
-                                                u.status === 'Inactive' ? { color: '#ef4444' } :
-                                                    { color: '#f59e0b' }
-                                        ]}>
-                                            {u.status === 'waiting' ? 'Pending' : u.status}
-                                        </Text>
+                                ))
+                            ) : activeTab === 'vehicles' ? (
+                                filtered.map((v, idx) => (
+                                    <View key={v.vehicle_number} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
+                                        <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
+                                        <Text style={[styles.cell, styles.cellLoginId]}>{v.vehicle_number}</Text>
+                                        <Text style={[styles.cell, { color: '#10b981' }]}>₹{v.price}</Text>
+                                        <Text style={[styles.cell, { color: '#94a3b8' }]}>{v.accidents_history || 'None'}</Text>
+                                        <View style={[styles.cell, { width: 100, alignItems: 'center' }]}>
+                                            <Text style={{ color: '#64748b', fontSize: 12 }}>View Only</Text>
+                                        </View>
                                     </View>
-                                </View>
-                                <View style={[styles.cell, { width: 180, flexDirection: 'row', gap: 6, justifyContent: 'center' }]}>
-                                    <TouchableOpacity
-                                        style={[styles.actionBtn, u.status === 'Active' ? styles.deactivateBtn : styles.activateBtn]}
-                                        onPress={() => handleToggle(u.id, u.status, activeTab === 'buyers' ? 'buyer' : 'seller')}
-                                    >
-                                        <Text style={styles.actionBtnText}>
-                                            {u.status === 'Active' ? 'Deactivate' : 'Activate'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.actionBtn, styles.deleteBtn]}
-                                        onPress={() => handleDeleteUser(u.id, activeTab === 'buyers' ? 'buyer' : 'seller')}
-                                    >
-                                        <Text style={styles.actionBtnText}>Delete</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        ))
-                    )}
+                                ))
+                            ) : (
+                                filtered.map((u, idx) => (
+                                    <View key={u.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
+                                        <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
+                                        <Text style={[styles.cell, styles.cellLoginId]}>{u.loginid}</Text>
+                                        <Text style={[styles.cell, styles.cellName]}>{u.name}</Text>
+                                        <Text style={[styles.cell, styles.cellEmail]}>{u.email}</Text>
+                                        <Text style={[styles.cell, styles.cellMobile]}>{u.mobile || '—'}</Text>
+                                        <View style={[styles.cell, { width: 90 }]}>
+                                            <View style={[
+                                                styles.statusBadge,
+                                                u.status === 'Active' ? styles.statusActive :
+                                                    u.status === 'Inactive' ? styles.statusInactive :
+                                                        styles.statusWaiting
+                                            ]}>
+                                                <Text style={[
+                                                    styles.statusText,
+                                                    u.status === 'Active' ? { color: '#10b981' } :
+                                                        u.status === 'Inactive' ? { color: '#ef4444' } :
+                                                            { color: '#f59e0b' }
+                                                ]}>
+                                                    {u.status === 'waiting' ? 'Pending' : u.status}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={[styles.cell, { width: 180, flexDirection: 'row', gap: 6, justifyContent: 'center' }]}>
+                                            <TouchableOpacity
+                                                style={[styles.actionBtn, u.status === 'Active' ? styles.deactivateBtn : styles.activateBtn]}
+                                                onPress={() => handleToggle(u.id, u.status, activeTab === 'buyers' ? 'buyer' : 'seller')}
+                                            >
+                                                <Text style={styles.actionBtnText}>
+                                                    {u.status === 'Active' ? 'Deactivate' : 'Activate'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                style={[styles.actionBtn, styles.deleteBtn]}
+                                                onPress={() => handleDeleteUser(u.id, activeTab === 'buyers' ? 'buyer' : 'seller')}
+                                            >
+                                                <Text style={styles.actionBtnText}>Delete</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ))
+                            )}
+                        </View>
+                    </ScrollView>
 
                     {/* Table Footer */}
                     <View style={styles.tableFooter}>

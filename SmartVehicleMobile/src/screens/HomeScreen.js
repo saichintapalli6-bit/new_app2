@@ -21,38 +21,28 @@ const HomeScreen = ({ navigation }) => {
             {/* NAVBAR */}
             <View style={styles.navbar}>
                 <View style={styles.navBrand}>
-                    <Car color="#22d3ee" size={isWeb ? 28 : 22} />
-                    <Text style={styles.brandText}>Smart Vehicle Procurement</Text>
+                    <Car color="#22d3ee" size={isWeb ? 26 : 20} />
+                    <Text style={styles.brandText} numberOfLines={1}>Vehicle Chain</Text>
                 </View>
-                <View style={styles.navLinks}>
-                    <TouchableOpacity style={[styles.navBtn, styles.navBtnActive]}>
-                        <Text style={styles.navBtnActiveText}>Home</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.navBtn, styles.navBtnGreen]}
-                        onPress={() => navigation.navigate('Login', { role: 'buyer' })}
-                    >
-                        <Text style={styles.navBtnText}>Buyer Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.navBtn, styles.navBtnBlue]}
-                        onPress={() => navigation.navigate('Login', { role: 'seller' })}
-                    >
-                        <Text style={styles.navBtnText}>Seller Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.navBtn, styles.navBtnOrange]}
-                        onPress={() => navigation.navigate('Login', { role: 'admin' })}
-                    >
-                        <Text style={styles.navBtnText}>Admin Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.navBtn, styles.navBtnPink]}
-                        onPress={() => navigation.navigate('Register')}
-                    >
-                        <Text style={styles.navBtnText}>Register</Text>
-                    </TouchableOpacity>
-                </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
+                    <View style={styles.navLinks}>
+                        <TouchableOpacity style={[styles.navBtn, styles.navBtnActive]} onPress={() => navigation.navigate('Home')}>
+                            <Text style={styles.navBtnActiveText}>Home</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.navBtn, styles.navBtnGreen]} onPress={() => navigation.navigate('Login', { role: 'buyer' })}>
+                            <Text style={styles.navBtnText}>Buyer</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.navBtn, styles.navBtnBlue]} onPress={() => navigation.navigate('Login', { role: 'seller' })}>
+                            <Text style={styles.navBtnText}>Seller</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.navBtn, styles.navBtnOrange]} onPress={() => navigation.navigate('Login', { role: 'admin' })}>
+                            <Text style={styles.navBtnText}>Admin</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.navBtn, styles.navBtnPink]} onPress={() => navigation.navigate('Register')}>
+                            <Text style={styles.navBtnText}>Join</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
 
             <ScrollView
@@ -62,35 +52,21 @@ const HomeScreen = ({ navigation }) => {
             >
                 {/* HERO SECTION */}
                 <View style={styles.hero}>
-
-                    {/* Full-section faded background vehicle */}
-                    <ImageBackground
-                        source={require('../../assets/vehicle_hero_bg.png')}
-                        style={styles.vehicleBgFull}
-                        imageStyle={{ opacity: 0.12, borderRadius: 0 }}
-                        resizeMode="cover"
-                    >
-                        <View style={styles.vehicleBgTopFade} />
-                        <View style={styles.vehicleBgBottomFade} />
-                    </ImageBackground>
-
-                    {/* Glowing car showcase image */}
                     <View style={styles.vehicleShowcaseBox}>
                         <Image
                             source={require('../../assets/vehicle_hero_bg.png')}
                             style={styles.vehicleShowcaseImg}
                             resizeMode="contain"
                         />
-                        {/* Reflection glow */}
                         <View style={styles.vehicleGlow} />
                     </View>
 
                     <View style={styles.heroBadge}>
-                        <Text style={styles.heroBadgeText}>🔗 Blockchain Powered</Text>
+                        <Text style={styles.heroBadgeText}>🔗 Blockchain Driven</Text>
                     </View>
-                    <Text style={styles.heroTitle}>Smart Vehicle{'\n'}Procurement System</Text>
+                    <Text style={styles.heroTitle}>Smart Vehicle{'\n'}Procurement</Text>
                     <Text style={styles.heroSubtitle}>
-                        Transforming Vehicle Transactions with{'\n'}Blockchain Innovation & Smart Contracts
+                        Transforming Vehicle Transactions with{'\n'}Secure Blockchain Smart Contracts
                     </Text>
 
                     <View style={styles.heroBtns}>
@@ -236,29 +212,33 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 100,
-        flexDirection: 'row',
+        flexDirection: isWeb ? 'row' : 'column',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: isWeb ? 60 : 20,
-        paddingVertical: 14,
-        backgroundColor: 'rgba(6,7,20,0.85)',
+        alignItems: isWeb ? 'center' : 'flex-start',
+        paddingHorizontal: isWeb ? 60 : 16,
+        paddingVertical: 10,
+        backgroundColor: 'rgba(6,7,20,0.95)',
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(34,211,238,0.1)',
     },
     navBrand: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
+        gap: 8,
+        marginBottom: isWeb ? 0 : 8,
     },
     brandText: {
         color: '#fff',
-        fontSize: isWeb ? 18 : 14,
+        fontSize: isWeb ? 18 : 15,
         fontWeight: 'bold',
-        marginLeft: 8,
+        marginLeft: 4,
+    },
+    navScroll: {
+        width: isWeb ? 'auto' : '100%',
     },
     navLinks: {
         flexDirection: 'row',
-        gap: 8,
+        gap: 6,
     },
     navBtn: {
         paddingHorizontal: isWeb ? 16 : 10,
@@ -348,18 +328,18 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     heroTitle: {
-        fontSize: isWeb ? 64 : 36,
+        fontSize: isWeb ? 64 : 32,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
-        lineHeight: isWeb ? 76 : 44,
-        marginBottom: 20,
+        lineHeight: isWeb ? 76 : 40,
+        marginBottom: 16,
     },
     heroSubtitle: {
-        fontSize: isWeb ? 20 : 16,
+        fontSize: isWeb ? 20 : 14,
         color: '#94a3b8',
         textAlign: 'center',
-        lineHeight: isWeb ? 30 : 24,
+        lineHeight: isWeb ? 30 : 20,
         marginBottom: 40,
         maxWidth: 600,
     },

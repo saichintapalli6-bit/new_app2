@@ -208,17 +208,16 @@ const SellerDashboard = ({ route, navigation }) => {
             {/* NAVBAR */}
             <View style={styles.navbar}>
                 <View style={styles.navLeft}>
-                    <Car color="#60a5fa" size={22} />
-                    <Text style={styles.navTitle}>Seller Dashboard</Text>
+                    <Car color="#60a5fa" size={20} />
+                    <Text style={styles.navTitle} numberOfLines={1}>Seller</Text>
                     <View style={styles.sellerBadge}>
-                        <Text style={styles.sellerBadgeText}>Seller</Text>
+                        <Text style={styles.sellerBadgeText}>Pro</Text>
                     </View>
                 </View>
                 <View style={styles.navRight}>
-                    <Text style={styles.navName}>👤 {user.name}</Text>
                     <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
-                        <LogOut color="#ef4444" size={16} />
-                        <Text style={styles.logoutBtnText}>Logout</Text>
+                        <LogOut color="#ef4444" size={14} />
+                        <Text style={styles.logoutBtnText}>Exit</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -523,53 +522,57 @@ const SellerDashboard = ({ route, navigation }) => {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={styles.colRow}>
-                            {['#', 'Vehicle No.', 'Price (₹)', 'Accidents', 'Status', 'Block Hash'].map((c, i) => (
-                                <Text key={i} style={[styles.colHead, i === 0 && { width: 40 }, i === 5 && { flex: 2 }]}>{c}</Text>
-                            ))}
-                        </View>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                            <View style={{ minWidth: isWeb ? '100%' : 600 }}>
+                                <View style={styles.colRow}>
+                                    {['#', 'Vehicle No.', 'Price (₹)', 'Accidents', 'Status', 'Block Hash'].map((c, i) => (
+                                        <Text key={i} style={[styles.colHead, i === 0 && { width: 40 }, i === 5 && { flex: 2 }]}>{c}</Text>
+                                    ))}
+                                </View>
 
-                        {loading ? (
-                            <View style={styles.centerMsg}>
-                                <ActivityIndicator color="#60a5fa" size="large" />
-                                <Text style={styles.centerMsgText}>Loading...</Text>
-                            </View>
-                        ) : vehicles.length === 0 ? (
-                            <View style={styles.centerMsg}>
-                                <Car color="#334155" size={48} />
-                                <Text style={styles.centerMsgText}>No vehicles added yet</Text>
-                                <TouchableOpacity onPress={() => setActiveTab('add')}>
-                                    <Text style={styles.addFirstText}>➕ Add your first vehicle</Text>
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
-                            vehicles.map((v, idx) => (
-                                <View key={v.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
-                                    <Text style={[styles.cell, { width: 40, color: '#64748b' }]}>{idx + 1}</Text>
-                                    <Text style={[styles.cell, { color: '#60a5fa', fontWeight: '700' }]}>{v.vehicle_number}</Text>
-                                    <Text style={[styles.cell, { color: '#10b981' }]}>₹{Number(v.price).toLocaleString('en-IN')}</Text>
-                                    <Text style={[styles.cell, { color: '#94a3b8', fontSize: 12 }]}>{v.accidents_history}</Text>
-                                    <View style={styles.cell}>
-                                        <View style={[styles.statusBadge, v.status === 'available' ? styles.statusAvail : v.status === 'pending' ? styles.statusWait : styles.statusSold]}>
-                                            <Text style={[styles.statusText, { color: v.status === 'available' ? '#10b981' : v.status === 'pending' ? '#eab308' : '#f59e0b' }]}>
-                                                {v.status === 'available' ? '✓ Available' : v.status === 'pending' ? '⏳ Pending' : '● Sold'}
+                                {loading ? (
+                                    <View style={styles.centerMsg}>
+                                        <ActivityIndicator color="#60a5fa" size="large" />
+                                        <Text style={styles.centerMsgText}>Loading...</Text>
+                                    </View>
+                                ) : vehicles.length === 0 ? (
+                                    <View style={styles.centerMsg}>
+                                        <Car color="#334155" size={48} />
+                                        <Text style={styles.centerMsgText}>No vehicles added yet</Text>
+                                        <TouchableOpacity onPress={() => setActiveTab('add')}>
+                                            <Text style={styles.addFirstText}>➕ Add your first vehicle</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    vehicles.map((v, idx) => (
+                                        <View key={v.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
+                                            <Text style={[styles.cell, { width: 40, color: '#64748b' }]}>{idx + 1}</Text>
+                                            <Text style={[styles.cell, { color: '#60a5fa', fontWeight: '700' }]}>{v.vehicle_number}</Text>
+                                            <Text style={[styles.cell, { color: '#10b981' }]}>₹{Number(v.price).toLocaleString('en-IN')}</Text>
+                                            <Text style={[styles.cell, { color: '#94a3b8', fontSize: 12 }]}>{v.accidents_history}</Text>
+                                            <View style={styles.cell}>
+                                                <View style={[styles.statusBadge, v.status === 'available' ? styles.statusAvail : v.status === 'pending' ? styles.statusWait : styles.statusSold]}>
+                                                    <Text style={[styles.statusText, { color: v.status === 'available' ? '#10b981' : v.status === 'pending' ? '#eab308' : '#f59e0b' }]}>
+                                                        {v.status === 'available' ? '✓ Available' : v.status === 'pending' ? '⏳ Pending' : '● Sold'}
+                                                    </Text>
+                                                </View>
+                                                {v.status === 'pending' && (
+                                                    <TouchableOpacity
+                                                        style={{ marginTop: 5, backgroundColor: 'rgba(96,165,250,0.1)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6, alignSelf: 'flex-start' }}
+                                                        onPress={() => openTxnModal(v.block_hash)}
+                                                    >
+                                                        <Text style={{ color: '#60a5fa', fontSize: 10, fontWeight: 'bold' }}>+ Add TXN ID</Text>
+                                                    </TouchableOpacity>
+                                                )}
+                                            </View>
+                                            <Text style={[styles.cell, { flex: 2, color: '#334155', fontSize: 10 }]} numberOfLines={1}>
+                                                {v.block_hash}
                                             </Text>
                                         </View>
-                                        {v.status === 'pending' && (
-                                            <TouchableOpacity
-                                                style={{ marginTop: 5, backgroundColor: 'rgba(96,165,250,0.1)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6, alignSelf: 'flex-start' }}
-                                                onPress={() => openTxnModal(v.block_hash)}
-                                            >
-                                                <Text style={{ color: '#60a5fa', fontSize: 10, fontWeight: 'bold' }}>+ Add TXN ID</Text>
-                                            </TouchableOpacity>
-                                        )}
-                                    </View>
-                                    <Text style={[styles.cell, { flex: 2, color: '#334155', fontSize: 10 }]} numberOfLines={1}>
-                                        {v.block_hash}
-                                    </Text>
-                                </View>
-                            ))
-                        )}
+                                    ))
+                                )}
+                            </View>
+                        </ScrollView>
 
                         <View style={styles.tableFooter}>
                             <Text style={styles.footerText}>Total: {vehicles.length} vehicles</Text>
