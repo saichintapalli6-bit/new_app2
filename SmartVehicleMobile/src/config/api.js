@@ -1,9 +1,8 @@
 import { Platform } from 'react-native';
 
 const LOCAL_IP = '192.168.1.120';
-const RENDER_URL = 'https://new-app2-1.onrender.com';
-
-const USE_PRODUCTION = false; // Manual override
+const RENDER_URL = 'https://smart-vehicle-procurement-app.onrender.com';
+const USE_PRODUCTION = true; // Enabled for permanent storage
 
 // Web deployment auto-detection
 const isDeployedWeb = Platform.OS === 'web' && typeof window !== 'undefined' && window.location.hostname !== 'localhost';
