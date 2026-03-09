@@ -9,8 +9,6 @@ import AnimatedBackground from '../components/AnimatedBackground';
 import { Car, User, Mail, Phone, Lock, ChevronRight, CheckCircle, XCircle, CreditCard, Library } from 'lucide-react-native';
 import { ENDPOINTS } from '../config/api';
 
-const isWeb = Platform.OS === 'web';
-
 const RegisterScreen = ({ navigation }) => {
     const { width } = Dimensions.get('window');
     const isLargeWeb = Platform.OS === 'web' && width > 800;

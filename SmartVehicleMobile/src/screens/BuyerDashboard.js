@@ -222,7 +222,7 @@ const BuyerDashboard = ({ route, navigation }) => {
                     data={vehicles}
                     renderItem={renderVehicle}
                     keyExtractor={(item) => item.vehicle_number || String(item.id)}
-                    numColumns={isWeb ? 2 : 1}
+                    numColumns={(Platform.OS === 'web') ? 2 : 1}
                     contentContainerStyle={styles.list}
                     ListEmptyComponent={
                         <Text style={styles.emptyText}>No vehicles available at the moment.</Text>
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0a1628',
     },
     header: {
-        paddingTop: isWeb ? 40 : 50,
+        paddingTop: (Platform.OS === 'web') ? 40 : 50,
         paddingBottom: 20,
         paddingHorizontal: 20,
         borderBottomLeftRadius: 20,
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.1)',
-        width: isWeb ? '48%' : '100%',
+        width: (Platform.OS === 'web') ? '48%' : '100%',
     },
     cardImage: {
         width: '100%',

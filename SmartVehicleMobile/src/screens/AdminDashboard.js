@@ -9,8 +9,6 @@ import axios from 'axios';
 import AnimatedBackground from '../components/AnimatedBackground';
 import { ENDPOINTS } from '../config/api';
 
-const isWeb = Platform.OS === 'web';
-
 const AdminDashboard = ({ route, navigation }) => {
     const user = route?.params?.user || { name: 'System Administrator' };
     const [activeTab, setActiveTab] = useState('buyers'); // 'buyers' | 'sellers' | 'transactions' | 'vehicles'
@@ -276,7 +274,7 @@ const AdminDashboard = ({ route, navigation }) => {
 
                     {/* Scrollable Table Content */}
                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        <View style={{ minWidth: isWeb ? '100%' : 700 }}>
+                        <View style={{ minWidth: (Platform.OS === 'web') ? '100%' : 700 }}>
                             {/* Column Headers */}
                             <View style={styles.colHeader}>
                                 {activeTab === 'transactions' ? (
@@ -493,7 +491,7 @@ const styles = StyleSheet.create({
         zIndex: 100,
     },
     navLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-    navTitle: { color: '#fff', fontSize: isWeb ? 20 : 16, fontWeight: 'bold', marginLeft: 4 },
+    navTitle: { color: '#fff', fontSize: (Platform.OS === 'web') ? 20 : 16, fontWeight: 'bold', marginLeft: 4 },
     adminBadge: {
         backgroundColor: 'rgba(245,158,11,0.15)', borderWidth: 1,
         borderColor: 'rgba(245,158,11,0.4)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20,
@@ -514,7 +512,7 @@ const styles = StyleSheet.create({
     logoutBtnText: { color: '#ef4444', fontSize: 13, fontWeight: '600' },
 
     scroll: { flex: 1 },
-    scrollContent: { paddingHorizontal: isWeb ? 40 : 16, paddingVertical: 28, paddingBottom: 60 },
+    scrollContent: { paddingHorizontal: (Platform.OS === 'web') ? 40 : 16, paddingVertical: 28, paddingBottom: 60 },
 
     // WELCOME
     welcomeRow: {
@@ -544,11 +542,11 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 18,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 18,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)', flexWrap: 'wrap', gap: 12,
     },
     tableHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-    tableTitle: { color: '#fff', fontSize: isWeb ? 18 : 15, fontWeight: 'bold' },
+    tableTitle: { color: '#fff', fontSize: (Platform.OS === 'web') ? 18 : 15, fontWeight: 'bold' },
     tabs: { flexDirection: 'row', gap: 8 },
     tab: {
         paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10,
@@ -557,7 +555,7 @@ const styles = StyleSheet.create({
     tabActive: { backgroundColor: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)' },
     tabActiveSeller: { backgroundColor: 'rgba(96,165,250,0.15)', borderColor: 'rgba(96,165,250,0.4)' },
     tabActiveTransactions: { backgroundColor: 'rgba(245,158,11,0.15)', borderColor: 'rgba(245,158,11,0.4)' },
-    tabText: { color: '#64748b', fontWeight: '600', fontSize: isWeb ? 14 : 12 },
+    tabText: { color: '#64748b', fontWeight: '600', fontSize: (Platform.OS === 'web') ? 14 : 12 },
     tabTextActive: { color: '#10b981' },
     tabTextActiveSeller: { color: '#60a5fa' },
     tabTextActiveTransactions: { color: '#f59e0b' },
@@ -565,7 +563,7 @@ const styles = StyleSheet.create({
     // SEARCH
     searchBox: {
         flexDirection: 'row', alignItems: 'center', gap: 10,
-        marginHorizontal: isWeb ? 24 : 16, marginVertical: 14,
+        marginHorizontal: (Platform.OS === 'web') ? 24 : 16, marginVertical: 14,
         backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 12,
         borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)',
         paddingHorizontal: 14, height: 44,
@@ -575,21 +573,21 @@ const styles = StyleSheet.create({
     // TABLE
     colHeader: {
         flexDirection: 'row', alignItems: 'center',
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 12,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 12,
         backgroundColor: 'rgba(255,255,255,0.03)',
         borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.05)',
     },
     colHeaderText: { flex: 1, color: '#475569', fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
     tableRow: {
         flexDirection: 'row', alignItems: 'center',
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 14,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)',
     },
     tableRowAlt: { backgroundColor: 'rgba(255,255,255,0.01)' },
-    cell: { flex: 1, color: '#cbd5e1', fontSize: isWeb ? 14 : 12, paddingRight: 8 },
+    cell: { flex: 1, color: '#cbd5e1', fontSize: (Platform.OS === 'web') ? 14 : 12, paddingRight: 8 },
     cellLoginId: { color: '#60a5fa', fontWeight: '600' },
     cellName: { color: '#e2e8f0', fontWeight: '500' },
-    cellEmail: { color: '#94a3b8', fontSize: isWeb ? 13 : 11 },
+    cellEmail: { color: '#94a3b8', fontSize: (Platform.OS === 'web') ? 13 : 11 },
     cellMobile: { color: '#64748b' },
 
     statusBadge: {
@@ -621,7 +619,7 @@ const styles = StyleSheet.create({
     emptyText: { color: '#475569', fontSize: 15 },
 
     tableFooter: {
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 14,
         borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)',
     },
     footerText: { color: '#475569', fontSize: 13 },

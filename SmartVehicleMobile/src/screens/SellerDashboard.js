@@ -13,8 +13,6 @@ import axios from 'axios';
 import AnimatedBackground from '../components/AnimatedBackground';
 import { ENDPOINTS } from '../config/api';
 
-const isWeb = Platform.OS === 'web';
-
 // ─── Helper ────────────────────────────────────────────────────────────────────
 const formatSize = (bytes) => {
     if (!bytes) return '';
@@ -119,7 +117,7 @@ const SellerDashboard = ({ route, navigation }) => {
 
     // ─── File pickers (web via DOM input) ────────────────────────────────────────
     const pickPhotoFile = () => {
-        if (!isWeb) return;
+        if (!(Platform.OS === 'web')) return;
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
@@ -138,7 +136,7 @@ const SellerDashboard = ({ route, navigation }) => {
     };
 
     const pickDocFile = () => {
-        if (!isWeb) return;
+        if (!(Platform.OS === 'web')) return;
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.pdf,.doc,.docx,.txt';
@@ -247,7 +245,7 @@ const SellerDashboard = ({ route, navigation }) => {
                 {activeTab === 'add' && (
                     <View style={styles.centerCard}>
                         {/* Left info panel (web only) */}
-                        {isWeb && (
+                        {(Platform.OS === 'web') && (
                             <View style={styles.infoPanel}>
                                 <View style={styles.infoBadge}>
                                     <Text style={styles.infoBadgeText}>🚗 List Your Vehicle</Text>
@@ -523,7 +521,7 @@ const SellerDashboard = ({ route, navigation }) => {
                         </View>
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                            <View style={{ minWidth: isWeb ? '100%' : 600 }}>
+                            <View style={{ minWidth: (Platform.OS === 'web') ? '100%' : 600 }}>
                                 <View style={styles.colRow}>
                                     {['#', 'Vehicle No.', 'Price (₹)', 'Accidents', 'Status', 'Block Hash'].map((c, i) => (
                                         <Text key={i} style={[styles.colHead, i === 0 && { width: 40 }, i === 5 && { flex: 2 }]}>{c}</Text>
@@ -635,14 +633,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1, borderBottomColor: 'rgba(96,165,250,0.2)',
     },
     navLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-    navTitle: { color: '#fff', fontSize: isWeb ? 20 : 15, fontWeight: 'bold', marginLeft: 4 },
+    navTitle: { color: '#fff', fontSize: (Platform.OS === 'web') ? 20 : 15, fontWeight: 'bold', marginLeft: 4 },
     sellerBadge: {
         backgroundColor: 'rgba(96,165,250,0.15)', borderWidth: 1,
         borderColor: 'rgba(96,165,250,0.4)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20,
     },
     sellerBadgeText: { color: '#60a5fa', fontSize: 11, fontWeight: '700' },
     navRight: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-    navName: { color: '#94a3b8', fontSize: isWeb ? 14 : 12 },
+    navName: { color: '#94a3b8', fontSize: (Platform.OS === 'web') ? 14 : 12 },
     logoutBtn: {
         flexDirection: 'row', alignItems: 'center', gap: 6,
         backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 1,
@@ -652,28 +650,28 @@ const styles = StyleSheet.create({
 
     // Tabs
     tabBar: {
-        flexDirection: 'row', paddingHorizontal: isWeb ? 40 : 16, paddingVertical: 14, gap: 12,
+        flexDirection: 'row', paddingHorizontal: (Platform.OS === 'web') ? 40 : 16, paddingVertical: 14, gap: 12,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)',
     },
     tabBtn: {
         flexDirection: 'row', alignItems: 'center', gap: 8,
-        paddingHorizontal: isWeb ? 20 : 14, paddingVertical: 10, borderRadius: 12,
+        paddingHorizontal: (Platform.OS === 'web') ? 20 : 14, paddingVertical: 10, borderRadius: 12,
         backgroundColor: 'rgba(255,255,255,0.04)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)',
     },
     tabBtnActiveGreen: { backgroundColor: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)' },
     tabBtnActiveBlue: { backgroundColor: 'rgba(96,165,250,0.15)', borderColor: 'rgba(96,165,250,0.4)' },
     tabIcon: { fontSize: 16 },
-    tabBtnText: { color: '#64748b', fontWeight: '600', fontSize: isWeb ? 14 : 13 },
+    tabBtnText: { color: '#64748b', fontWeight: '600', fontSize: (Platform.OS === 'web') ? 14 : 13 },
 
     scrollContent: {
-        flexGrow: 1, paddingHorizontal: isWeb ? 40 : 16,
+        flexGrow: 1, paddingHorizontal: (Platform.OS === 'web') ? 40 : 16,
         paddingVertical: 28, paddingBottom: 60,
     },
 
     // Add form layout
     centerCard: {
-        flexDirection: isWeb ? 'row' : 'column',
-        gap: isWeb ? 50 : 0, alignItems: isWeb ? 'flex-start' : 'stretch',
+        flexDirection: (Platform.OS === 'web') ? 'row' : 'column',
+        gap: (Platform.OS === 'web') ? 50 : 0, alignItems: (Platform.OS === 'web') ? 'flex-start' : 'stretch',
     },
     infoPanel: { flex: 1, maxWidth: 360, paddingTop: 10 },
     infoBadge: {
@@ -692,11 +690,11 @@ const styles = StyleSheet.create({
 
     // Form card
     formCard: {
-        flex: 1, maxWidth: isWeb ? 560 : '100%', borderRadius: 24, borderWidth: 1,
-        borderColor: 'rgba(96,165,250,0.15)', padding: isWeb ? 40 : 24,
+        flex: 1, maxWidth: (Platform.OS === 'web') ? 560 : '100%', borderRadius: 24, borderWidth: 1,
+        borderColor: 'rgba(96,165,250,0.15)', padding: (Platform.OS === 'web') ? 40 : 24,
         overflow: 'hidden', backgroundColor: 'rgba(10,15,35,0.85)',
     },
-    formTitle: { fontSize: isWeb ? 26 : 22, fontWeight: 'bold', color: '#fff', marginBottom: 6 },
+    formTitle: { fontSize: (Platform.OS === 'web') ? 26 : 22, fontWeight: 'bold', color: '#fff', marginBottom: 6 },
     formSub: { fontSize: 13, color: '#475569', marginBottom: 26 },
 
     // Form fields
@@ -706,12 +704,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', gap: 12,
         backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 14,
         borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)',
-        paddingHorizontal: 14, height: isWeb ? 50 : 48,
+        paddingHorizontal: 14, height: (Platform.OS === 'web') ? 50 : 48,
     },
     fInputMulti: { height: 'auto', paddingVertical: 12, alignItems: 'flex-start' },
     fInputFocus: { borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.06)' },
     fInputError: { borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.05)' },
-    input: { flex: 1, color: '#fff', fontSize: isWeb ? 15 : 14, height: '100%', outlineStyle: 'none' },
+    input: { flex: 1, color: '#fff', fontSize: (Platform.OS === 'web') ? 15 : 14, height: '100%', outlineStyle: 'none' },
     fError: { color: '#f87171', fontSize: 12, marginTop: 5 },
     fHint: { color: '#334155', fontSize: 12, marginTop: 5 },
 
@@ -746,7 +744,7 @@ const styles = StyleSheet.create({
         borderWidth: 1, borderColor: 'rgba(96,165,250,0.2)',
     },
     photoPreview: {
-        width: '100%', height: isWeb ? 200 : 160,
+        width: '100%', height: (Platform.OS === 'web') ? 200 : 160,
         backgroundColor: 'rgba(255,255,255,0.03)',
     },
     previewLabel: {
@@ -766,9 +764,9 @@ const styles = StyleSheet.create({
     docPreviewSize: { color: '#78350f', fontSize: 11, marginTop: 2 },
 
     // Submit
-    submitBtn: { height: isWeb ? 52 : 48, borderRadius: 14, overflow: 'hidden', marginTop: 10, marginBottom: 16 },
+    submitBtn: { height: (Platform.OS === 'web') ? 52 : 48, borderRadius: 14, overflow: 'hidden', marginTop: 10, marginBottom: 16 },
     submitBtnGrad: { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 },
-    submitBtnText: { color: '#fff', fontWeight: 'bold', fontSize: isWeb ? 17 : 15 },
+    submitBtnText: { color: '#fff', fontWeight: 'bold', fontSize: (Platform.OS === 'web') ? 17 : 15 },
 
     historyLink: { alignItems: 'center' },
     historyLinkText: { color: '#60a5fa', fontSize: 14, fontWeight: '600' },
@@ -780,11 +778,11 @@ const styles = StyleSheet.create({
     },
     historyHeader: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 18,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 18,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)',
     },
     historyHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-    historyTitle: { color: '#fff', fontSize: isWeb ? 18 : 15, fontWeight: 'bold' },
+    historyTitle: { color: '#fff', fontSize: (Platform.OS === 'web') ? 18 : 15, fontWeight: 'bold' },
     refreshBtn: {
         flexDirection: 'row', alignItems: 'center', gap: 6,
         backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: 1,
@@ -792,18 +790,18 @@ const styles = StyleSheet.create({
     },
     refreshBtnText: { color: '#94a3b8', fontSize: 13, fontWeight: '600' },
     colRow: {
-        flexDirection: 'row', paddingHorizontal: isWeb ? 24 : 12, paddingVertical: 12,
+        flexDirection: 'row', paddingHorizontal: (Platform.OS === 'web') ? 24 : 12, paddingVertical: 12,
         backgroundColor: 'rgba(255,255,255,0.03)',
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)',
     },
     colHead: { flex: 1, color: '#475569', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
     tableRow: {
         flexDirection: 'row', alignItems: 'center',
-        paddingHorizontal: isWeb ? 24 : 12, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 12, paddingVertical: 14,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)',
     },
     tableRowAlt: { backgroundColor: 'rgba(255,255,255,0.01)' },
-    cell: { flex: 1, color: '#cbd5e1', fontSize: isWeb ? 14 : 12, paddingRight: 8 },
+    cell: { flex: 1, color: '#cbd5e1', fontSize: (Platform.OS === 'web') ? 14 : 12, paddingRight: 8 },
     statusBadge: {
         paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20,
         borderWidth: 1, alignSelf: 'flex-start',
@@ -816,7 +814,7 @@ const styles = StyleSheet.create({
     centerMsgText: { color: '#475569', fontSize: 15 },
     addFirstText: { color: '#60a5fa', fontWeight: '600', fontSize: 15 },
     tableFooter: {
-        paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 14,
         borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)',
     },
     footerText: { color: '#475569', fontSize: 13 },

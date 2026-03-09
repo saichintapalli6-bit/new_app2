@@ -8,7 +8,6 @@ import { Car, Shield, Cpu, Activity, ChevronRight } from 'lucide-react-native';
 import AnimatedBackground from '../components/AnimatedBackground';
 
 const { width } = Dimensions.get('window');
-const isWeb = Platform.OS === 'web';
 
 const HomeScreen = ({ navigation }) => {
     return (
@@ -21,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
             {/* NAVBAR */}
             <View style={styles.navbar}>
                 <View style={styles.navBrand}>
-                    <Car color="#22d3ee" size={isWeb ? 26 : 20} />
+                    <Car color="#22d3ee" size={(Platform.OS === 'web') ? 26 : 20} />
                     <Text style={styles.brandText} numberOfLines={1}>Vehicle Chain</Text>
                 </View>
                 <View style={styles.navLinks}>
@@ -107,7 +106,7 @@ const HomeScreen = ({ navigation }) => {
                     <View style={styles.featuresGrid}>
                         {[
                             {
-                                icon: <Cpu color="#22d3ee" size={isWeb ? 40 : 32} />,
+                                icon: <Cpu color="#22d3ee" size={(Platform.OS === 'web') ? 40 : 32} />,
                                 title: 'Transparent Transactions',
                                 desc: 'Leverage blockchain for secure, traceable, and tamper-proof vehicle transactions.',
                                 color: '#22d3ee',
@@ -115,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
                                 border: 'rgba(34,211,238,0.3)',
                             },
                             {
-                                icon: <Shield color="#4ade80" size={isWeb ? 40 : 32} />,
+                                icon: <Shield color="#4ade80" size={(Platform.OS === 'web') ? 40 : 32} />,
                                 title: 'Smart Contracts',
                                 desc: 'Streamline procurement with automated, error-free smart contracts.',
                                 color: '#4ade80',
@@ -123,7 +122,7 @@ const HomeScreen = ({ navigation }) => {
                                 border: 'rgba(74,222,128,0.3)',
                             },
                             {
-                                icon: <Activity color="#a78bfa" size={isWeb ? 40 : 32} />,
+                                icon: <Activity color="#a78bfa" size={(Platform.OS === 'web') ? 40 : 32} />,
                                 title: 'Decentralized Security',
                                 desc: 'Safeguard sensitive data with decentralized blockchain storage.',
                                 color: '#a78bfa',
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: isWeb ? 60 : 20,
+        paddingHorizontal: (Platform.OS === 'web') ? 60 : 20,
         paddingVertical: 14,
         backgroundColor: 'rgba(6,7,20,0.85)',
         borderBottomWidth: 1,
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
     },
     brandText: {
         color: '#fff',
-        fontSize: isWeb ? 18 : 14,
+        fontSize: (Platform.OS === 'web') ? 18 : 14,
         fontWeight: 'bold',
         marginLeft: 8,
     },
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     navBtn: {
-        paddingHorizontal: isWeb ? 16 : 10,
+        paddingHorizontal: (Platform.OS === 'web') ? 16 : 10,
         paddingVertical: 8,
         borderRadius: 20,
     },
@@ -235,15 +234,15 @@ const styles = StyleSheet.create({
     navBtnBlue: { backgroundColor: '#2563eb' },
     navBtnOrange: { backgroundColor: '#d97706' },
     navBtnPink: { backgroundColor: '#db2777' },
-    navBtnText: { color: '#fff', fontWeight: '600', fontSize: isWeb ? 14 : 11 },
-    navBtnActiveText: { color: '#fff', fontWeight: '600', fontSize: isWeb ? 14 : 11 },
+    navBtnText: { color: '#fff', fontWeight: '600', fontSize: (Platform.OS === 'web') ? 14 : 11 },
+    navBtnActiveText: { color: '#fff', fontWeight: '600', fontSize: (Platform.OS === 'web') ? 14 : 11 },
 
     // HERO
     hero: {
         alignItems: 'center',
-        paddingHorizontal: isWeb ? 40 : 20,
-        paddingTop: isWeb ? 80 : 50,
-        paddingBottom: isWeb ? 80 : 50,
+        paddingHorizontal: (Platform.OS === 'web') ? 40 : 20,
+        paddingTop: (Platform.OS === 'web') ? 80 : 50,
+        paddingBottom: (Platform.OS === 'web') ? 80 : 50,
         overflow: 'hidden',
         position: 'relative',
     },
@@ -272,22 +271,22 @@ const styles = StyleSheet.create({
     // Vehicle showcase image (clear, glowing)
     vehicleShowcaseBox: {
         width: '100%',
-        maxWidth: isWeb ? 820 : 360,
+        maxWidth: (Platform.OS === 'web') ? 820 : 360,
         alignItems: 'center',
-        marginBottom: isWeb ? -20 : -10,
+        marginBottom: (Platform.OS === 'web') ? -20 : -10,
         position: 'relative',
     },
     vehicleShowcaseImg: {
         width: '100%',
-        height: isWeb ? 340 : 200,
+        height: (Platform.OS === 'web') ? 340 : 200,
         opacity: 0.92,
     },
     vehicleGlow: {
         position: 'absolute',
-        bottom: isWeb ? -20 : -10,
+        bottom: (Platform.OS === 'web') ? -20 : -10,
         left: '10%',
         right: '10%',
-        height: isWeb ? 60 : 30,
+        height: (Platform.OS === 'web') ? 60 : 30,
         backgroundColor: 'rgba(34,211,238,0.18)',
         borderRadius: 100,
         // blur simulation with shadowColor
@@ -309,22 +308,22 @@ const styles = StyleSheet.create({
     },
     heroBadgeText: {
         color: '#22d3ee',
-        fontSize: isWeb ? 14 : 12,
+        fontSize: (Platform.OS === 'web') ? 14 : 12,
         fontWeight: '600',
     },
     heroTitle: {
-        fontSize: isWeb ? 64 : 32,
+        fontSize: (Platform.OS === 'web') ? 64 : 32,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
-        lineHeight: isWeb ? 76 : 40,
+        lineHeight: (Platform.OS === 'web') ? 76 : 40,
         marginBottom: 16,
     },
     heroSubtitle: {
-        fontSize: isWeb ? 20 : 14,
+        fontSize: (Platform.OS === 'web') ? 20 : 14,
         color: '#94a3b8',
         textAlign: 'center',
-        lineHeight: isWeb ? 30 : 20,
+        lineHeight: (Platform.OS === 'web') ? 30 : 20,
         marginBottom: 40,
         maxWidth: 600,
     },
@@ -336,8 +335,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     heroBtnPrimary: {
-        height: isWeb ? 54 : 46,
-        minWidth: isWeb ? 180 : 150,
+        height: (Platform.OS === 'web') ? 54 : 46,
+        minWidth: (Platform.OS === 'web') ? 180 : 150,
         borderRadius: 28,
         overflow: 'hidden',
     },
@@ -352,11 +351,11 @@ const styles = StyleSheet.create({
     heroBtnPrimaryText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: isWeb ? 17 : 15,
+        fontSize: (Platform.OS === 'web') ? 17 : 15,
     },
     heroBtnSecondary: {
-        height: isWeb ? 54 : 46,
-        minWidth: isWeb ? 140 : 120,
+        height: (Platform.OS === 'web') ? 54 : 46,
+        minWidth: (Platform.OS === 'web') ? 140 : 120,
         borderRadius: 28,
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.2)',
@@ -367,27 +366,27 @@ const styles = StyleSheet.create({
     heroBtnSecondaryText: {
         color: '#fff',
         fontWeight: '600',
-        fontSize: isWeb ? 16 : 14,
+        fontSize: (Platform.OS === 'web') ? 16 : 14,
     },
     statsRow: {
         flexDirection: 'row',
-        gap: isWeb ? 60 : 30,
+        gap: (Platform.OS === 'web') ? 60 : 30,
     },
     statItem: { alignItems: 'center' },
     statValue: {
-        fontSize: isWeb ? 36 : 26,
+        fontSize: (Platform.OS === 'web') ? 36 : 26,
         fontWeight: 'bold',
         color: '#22d3ee',
     },
     statLabel: {
-        fontSize: isWeb ? 14 : 12,
+        fontSize: (Platform.OS === 'web') ? 14 : 12,
         color: '#64748b',
         marginTop: 4,
     },
 
     // FEATURES
     featuresSection: {
-        paddingHorizontal: isWeb ? 60 : 20,
+        paddingHorizontal: (Platform.OS === 'web') ? 60 : 20,
         paddingVertical: 60,
         alignItems: 'center',
     },
@@ -399,22 +398,22 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     sectionTitle: {
-        fontSize: isWeb ? 42 : 28,
+        fontSize: (Platform.OS === 'web') ? 42 : 28,
         fontWeight: 'bold',
         color: '#fbbf24',
         textAlign: 'center',
         marginBottom: 16,
     },
     sectionSubtitle: {
-        fontSize: isWeb ? 17 : 14,
+        fontSize: (Platform.OS === 'web') ? 17 : 14,
         color: '#64748b',
         textAlign: 'center',
         maxWidth: 560,
-        lineHeight: isWeb ? 26 : 22,
+        lineHeight: (Platform.OS === 'web') ? 26 : 22,
         marginBottom: 50,
     },
     featuresGrid: {
-        flexDirection: isWeb ? 'row' : 'column',
+        flexDirection: (Platform.OS === 'web') ? 'row' : 'column',
         gap: 24,
         width: '100%',
         maxWidth: 1100,
@@ -422,10 +421,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     featureCard: {
-        flex: isWeb ? 1 : undefined,
-        minWidth: isWeb ? 280 : undefined,
-        maxWidth: isWeb ? 340 : undefined,
-        width: isWeb ? undefined : '100%',
+        flex: (Platform.OS === 'web') ? 1 : undefined,
+        minWidth: (Platform.OS === 'web') ? 280 : undefined,
+        maxWidth: (Platform.OS === 'web') ? 340 : undefined,
+        width: (Platform.OS === 'web') ? undefined : '100%',
         borderRadius: 20,
         borderWidth: 1,
         padding: 30,
@@ -440,13 +439,13 @@ const styles = StyleSheet.create({
         marginBottom: 18,
     },
     featureTitle: {
-        fontSize: isWeb ? 20 : 18,
+        fontSize: (Platform.OS === 'web') ? 20 : 18,
         fontWeight: 'bold',
         marginBottom: 10,
         textAlign: 'center',
     },
     featureDesc: {
-        fontSize: isWeb ? 15 : 13,
+        fontSize: (Platform.OS === 'web') ? 15 : 13,
         color: '#94a3b8',
         textAlign: 'center',
         lineHeight: 22,
@@ -454,25 +453,25 @@ const styles = StyleSheet.create({
 
     // CTA
     ctaSection: {
-        paddingHorizontal: isWeb ? 60 : 20,
+        paddingHorizontal: (Platform.OS === 'web') ? 60 : 20,
         paddingBottom: 60,
     },
     ctaBox: {
         borderRadius: 24,
         borderWidth: 1,
         borderColor: 'rgba(34,211,238,0.2)',
-        padding: isWeb ? 60 : 36,
+        padding: (Platform.OS === 'web') ? 60 : 36,
         alignItems: 'center',
     },
     ctaTitle: {
-        fontSize: isWeb ? 40 : 26,
+        fontSize: (Platform.OS === 'web') ? 40 : 26,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
         marginBottom: 14,
     },
     ctaSubtitle: {
-        fontSize: isWeb ? 17 : 14,
+        fontSize: (Platform.OS === 'web') ? 17 : 14,
         color: '#94a3b8',
         textAlign: 'center',
         marginBottom: 32,
