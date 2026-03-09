@@ -24,25 +24,14 @@ const HomeScreen = ({ navigation }) => {
                     <Car color="#22d3ee" size={isWeb ? 26 : 20} />
                     <Text style={styles.brandText} numberOfLines={1}>Vehicle Chain</Text>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
-                    <View style={styles.navLinks}>
-                        <TouchableOpacity style={[styles.navBtn, styles.navBtnActive]} onPress={() => navigation.navigate('Home')}>
-                            <Text style={styles.navBtnActiveText}>Home</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.navBtn, styles.navBtnGreen]} onPress={() => navigation.navigate('Login', { role: 'buyer' })}>
-                            <Text style={styles.navBtnText}>Buyer</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.navBtn, styles.navBtnBlue]} onPress={() => navigation.navigate('Login', { role: 'seller' })}>
-                            <Text style={styles.navBtnText}>Seller</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.navBtn, styles.navBtnOrange]} onPress={() => navigation.navigate('Login', { role: 'admin' })}>
-                            <Text style={styles.navBtnText}>Admin</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.navBtn, styles.navBtnPink]} onPress={() => navigation.navigate('Register')}>
-                            <Text style={styles.navBtnText}>Join</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                <View style={styles.navLinks}>
+                    <TouchableOpacity style={[styles.navBtn, styles.navBtnActive]} onPress={() => navigation.navigate('Home')}>
+                        <Text style={styles.navBtnActiveText}>Home</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.navBtn, styles.navBtnBlue]} onPress={() => navigation.navigate('Login', { role: 'buyer' })}>
+                        <Text style={styles.navBtnText}>Sign In</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <ScrollView
