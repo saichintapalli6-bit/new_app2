@@ -618,7 +618,7 @@ const styles = StyleSheet.create({
     // Toast
     toast: {
         position: 'absolute', top: 70, alignSelf: 'center',
-        width: isWeb ? 500 : '92%',
+        width: (Platform.OS === 'web') ? 500 : '92%',
         flexDirection: 'row', alignItems: 'center', gap: 10,
         paddingHorizontal: 18, paddingVertical: 13,
         borderRadius: 14, zIndex: 999, borderWidth: 1,
@@ -630,7 +630,7 @@ const styles = StyleSheet.create({
     // Navbar
     navbar: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        paddingHorizontal: isWeb ? 40 : 16, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 40 : 16, paddingVertical: 14,
         backgroundColor: 'rgba(6,7,20,0.95)',
         borderBottomWidth: 1, borderBottomColor: 'rgba(96,165,250,0.2)',
     },

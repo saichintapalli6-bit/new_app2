@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     // TOAST
     toast: {
         position: 'absolute', top: 70, alignSelf: 'center',
-        width: isWeb ? 420 : '90%',
+        width: (Platform.OS === 'web') ? 420 : '90%',
         flexDirection: 'row', alignItems: 'center', gap: 10,
         paddingHorizontal: 18, paddingVertical: 12,
         borderRadius: 12, zIndex: 999, borderWidth: 1,
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     // NAVBAR
     navbar: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        paddingHorizontal: isWeb ? 40 : 16, paddingVertical: 14,
+        paddingHorizontal: (Platform.OS === 'web') ? 40 : 16, paddingVertical: 14,
         backgroundColor: 'rgba(6,7,20,0.95)',
         borderBottomWidth: 1, borderBottomColor: 'rgba(245,158,11,0.2)',
         zIndex: 100,
@@ -521,20 +521,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
         marginBottom: 28,
     },
-    welcomeHello: { fontSize: isWeb ? 20 : 16, color: '#94a3b8', marginBottom: 4 },
+    welcomeHello: { fontSize: (Platform.OS === 'web') ? 20 : 16, color: '#94a3b8', marginBottom: 4 },
     welcomeName: { color: '#fff', fontWeight: 'bold' },
-    welcomeSub: { fontSize: isWeb ? 15 : 13, color: '#475569' },
+    welcomeSub: { fontSize: (Platform.OS === 'web') ? 15 : 13, color: '#475569' },
 
     // STATS
     statsGrid: {
         flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginBottom: 32,
     },
     statCard: {
-        flex: 1, minWidth: isWeb ? 180 : 140, borderRadius: 16,
-        borderWidth: 1, padding: isWeb ? 24 : 16,
+        flex: 1, minWidth: (Platform.OS === 'web') ? 180 : 140, borderRadius: 16,
+        borderWidth: 1, padding: (Platform.OS === 'web') ? 24 : 16,
     },
-    statValue: { fontSize: isWeb ? 40 : 30, fontWeight: 'bold', marginBottom: 4 },
-    statLabel: { color: '#64748b', fontSize: isWeb ? 14 : 12 },
+    statValue: { fontSize: (Platform.OS === 'web') ? 40 : 30, fontWeight: 'bold', marginBottom: 4 },
+    statLabel: { color: '#64748b', fontSize: (Platform.OS === 'web') ? 14 : 12 },
 
     // TABLE SECTION
     tableSection: {
