@@ -46,6 +46,14 @@ const HomeScreen = ({ navigation }) => {
             >
                 {/* HERO SECTION */}
                 <View style={styles.hero}>
+                    <Image
+                        source={require('../../assets/vehicle_hero_bg.png')}
+                        style={styles.heroImgBg}
+                        resizeMode="cover"
+                        blurRadius={2}
+                    />
+                    <View style={styles.heroOverlay} />
+
                     <View style={styles.vehicleShowcaseBox}>
                         <Image
                             source={require('../../assets/vehicle_hero_bg.png')}
@@ -247,31 +255,25 @@ const styles = StyleSheet.create({
     hero: {
         alignItems: 'center',
         paddingHorizontal: (Platform.OS === 'web') ? 40 : 20,
-        paddingTop: (Platform.OS === 'web') ? 80 : 50,
-        paddingBottom: (Platform.OS === 'web') ? 80 : 50,
+        paddingTop: (Platform.OS === 'web') ? 100 : 70,
+        paddingBottom: (Platform.OS === 'web') ? 100 : 70,
         overflow: 'hidden',
         position: 'relative',
+        borderRadius: 30, // Curvy edges
+        marginHorizontal: (Platform.OS === 'web') ? 40 : 15,
+        marginTop: 20,
     },
-
-    // Vehicle BG - full hero background
-    vehicleBgFull: {
+    heroImgBg: {
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
         width: '100%',
         height: '100%',
+        opacity: 0.35,
     },
-    vehicleBgTopFade: {
+    heroOverlay: {
         position: 'absolute',
-        top: 0, left: 0, right: 0,
-        height: 120,
-        backgroundColor: 'transparent',
-        // gradient replacement: fade from dark top
-        borderTopWidth: 0,
-    },
-    vehicleBgBottomFade: {
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0,
-        height: 120,
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(6,7,20,0.6)',
     },
 
     // Vehicle showcase image (clear, glowing)
