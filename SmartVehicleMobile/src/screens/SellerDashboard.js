@@ -212,18 +212,16 @@ const SellerDashboard = ({ route, navigation }) => {
                         <Text style={styles.sellerBadgeText}>Pro</Text>
                     </View>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexShrink: 1 }}>
-                    <View style={styles.navRight}>
-                        <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
-                            <LogOut color="#ef4444" size={14} />
-                            <Text style={styles.logoutBtnText}>Exit</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                <View style={styles.navRight}>
+                    <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
+                        <LogOut color="#ef4444" size={14} />
+                        <Text style={styles.logoutBtnText}>Exit</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             {/* TABS */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabBarScroll}>
+            <View style={styles.tabBar}>
                 {tabs.map((t) => (
                     <TouchableOpacity
                         key={t.key}
@@ -239,7 +237,7 @@ const SellerDashboard = ({ route, navigation }) => {
                         </Text>
                     </TouchableOpacity>
                 ))}
-            </ScrollView>
+            </View>
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
@@ -582,33 +580,31 @@ const SellerDashboard = ({ route, navigation }) => {
             </ScrollView>
 
             {/* Transaction ID Modal */}
-            {
-                txnModalVisible && (
-                    <View style={styles.modalBg}>
-                        <View style={styles.modalCard}>
-                            <Text style={styles.modalTitle}>Provide Transaction ID</Text>
-                            <Text style={styles.modalSub}>Enter the Transaction ID received in your Bank Account for this purchase.</Text>
+            {txnModalVisible && (
+                <View style={styles.modalBg}>
+                    <View style={styles.modalCard}>
+                        <Text style={styles.modalTitle}>Provide Transaction ID</Text>
+                        <Text style={styles.modalSub}>Enter the Transaction ID received in your Bank Account for this purchase.</Text>
 
-                            <TextInput
-                                style={styles.modalInput}
-                                placeholder="e.g. TXN123456789"
-                                placeholderTextColor="#64748b"
-                                value={sellerTxnIdInput}
-                                onChangeText={setSellerTxnIdInput}
-                            />
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder="e.g. TXN123456789"
+                            placeholderTextColor="#64748b"
+                            value={sellerTxnIdInput}
+                            onChangeText={setSellerTxnIdInput}
+                        />
 
-                            <View style={styles.modalActions}>
-                                <TouchableOpacity style={styles.modalBtnCancel} onPress={() => setTxnModalVisible(false)}>
-                                    <Text style={styles.modalBtnCancelText}>Cancel</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.modalBtnConfirm} onPress={submitSellerTxnId}>
-                                    <Text style={styles.modalBtnConfirmText}>Submit ID</Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.modalActions}>
+                            <TouchableOpacity style={styles.modalBtnCancel} onPress={() => setTxnModalVisible(false)}>
+                                <Text style={styles.modalBtnCancelText}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.modalBtnConfirm} onPress={submitSellerTxnId}>
+                                <Text style={styles.modalBtnConfirmText}>Submit ID</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                )
-            }
+                </View>
+            )}
         </View>
     );
 };
@@ -653,12 +649,6 @@ const styles = StyleSheet.create({
     logoutBtnText: { color: '#ef4444', fontSize: 13, fontWeight: '600' },
 
     // Tabs
-    // Tab Bar
-    tabBarScroll: {
-        backgroundColor: 'rgba(255,255,255,0.02)',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(255,255,255,0.06)',
-    },
     tabBar: {
         flexDirection: 'row', paddingHorizontal: (Platform.OS === 'web') ? 40 : 16, paddingVertical: 14, gap: 12,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)',
