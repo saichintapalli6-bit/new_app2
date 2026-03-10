@@ -218,47 +218,43 @@ const AdminDashboard = ({ route, navigation }) => {
 
                 {/* USER MANAGEMENT TABLE */}
                 <View style={styles.tableSection}>
-                    {/* Table Header */}
+
+                    {/* Title Row */}
                     <View style={styles.tableHeader}>
-                        <View style={styles.tableHeaderLeft}>
-                            <Users color="#f59e0b" size={20} />
-                            <Text style={styles.tableTitle}>User Management</Text>
-                        </View>
-                        <View style={styles.tabs}>
+                        <Users color="#f59e0b" size={20} />
+                        <Text style={styles.tableTitle}>User Management</Text>
+                        {loading && <ActivityIndicator color="#f59e0b" size="small" style={{ marginLeft: 10 }} />}
+                    </View>
+
+                    {/* Tabs Row - horizontally scrollable, always visible */}
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScrollRow}>
+                        <View style={styles.tabsRow}>
                             <TouchableOpacity
                                 style={[styles.tab, activeTab === 'buyers' && styles.tabActive]}
                                 onPress={() => { setActiveTab('buyers'); setSearchText(''); }}
                             >
-                                <Text style={[styles.tabText, activeTab === 'buyers' && styles.tabTextActive]}>
-                                    🛒 Buyers ({buyers.length})
-                                </Text>
+                                <Text style={[styles.tabText, activeTab === 'buyers' && styles.tabTextActive]}>🛒 Buyers ({buyers.length})</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.tab, activeTab === 'sellers' && styles.tabActiveSeller]}
                                 onPress={() => { setActiveTab('sellers'); setSearchText(''); }}
                             >
-                                <Text style={[styles.tabText, activeTab === 'sellers' && styles.tabTextActiveSeller]}>
-                                    🚗 Sellers ({sellers.length})
-                                </Text>
+                                <Text style={[styles.tabText, activeTab === 'sellers' && styles.tabTextActiveSeller]}>🚗 Sellers ({sellers.length})</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.tab, activeTab === 'transactions' && styles.tabActiveTransactions]}
                                 onPress={() => { setActiveTab('transactions'); setSearchText(''); }}
                             >
-                                <Text style={[styles.tabText, activeTab === 'transactions' && styles.tabTextActiveTransactions]}>
-                                    💱 Transactions ({transactions.length})
-                                </Text>
+                                <Text style={[styles.tabText, activeTab === 'transactions' && styles.tabTextActiveTransactions]}>💱 Transactions ({transactions.length})</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.tab, activeTab === 'vehicles' && styles.tabActiveVehicles]}
                                 onPress={() => { setActiveTab('vehicles'); setSearchText(''); }}
                             >
-                                <Text style={[styles.tabText, activeTab === 'vehicles' && styles.tabTextActiveVehicles]}>
-                                    🚗 Vehicles ({vehicles.length})
-                                </Text>
+                                <Text style={[styles.tabText, activeTab === 'vehicles' && styles.tabTextActiveVehicles]}>� Vehicles ({vehicles.length})</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </ScrollView>
 
                     {/* Search */}
                     <View style={styles.searchBox}>
@@ -274,22 +270,34 @@ const AdminDashboard = ({ route, navigation }) => {
 
                     {/* Scrollable Table Content */}
                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        <View style={{ minWidth: (Platform.OS === 'web') ? '100%' : 700 }}>
+                        <View style={{ minWidth: 1000 }}>
                             {/* Column Headers */}
                             <View style={styles.colHeader}>
-                                {activeTab === 'transactions' ? (
-                                    ['#', 'Vehicle', 'Buyer', 'Price', 'Status', 'Hash Code', 'Action'].map((col, i) => (
-                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 5 && { flex: 2 }, i === 6 && { width: 130, textAlign: 'center' }]}>{col}</Text>
-                                    ))
-                                ) : activeTab === 'vehicles' ? (
-                                    ['#', 'Vehicle Number', 'Price', 'Accidents', 'Action'].map((col, i) => (
-                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 4 && { width: 100, textAlign: 'center' }]}>{col}</Text>
-                                    ))
-                                ) : (
-                                    ['#', 'Login ID', 'Name', 'Email', 'Mobile', 'Status', 'Action'].map((col, i) => (
-                                        <Text key={i} style={[styles.colHeaderText, i === 0 && { width: 40 }, i === 6 && { width: 180, textAlign: 'center' }]}>{col}</Text>
-                                    ))
-                                )}
+                                {(activeTab === 'transactions' ? [
+                                    { label: '#', w: 40 },
+                                    { label: 'Vehicle', w: 140 },
+                                    { label: 'Buyer', w: 140 },
+                                    { label: 'Price', w: 100 },
+                                    { label: 'Status', w: 100 },
+                                    { label: 'Hash Code', w: 250 },
+                                    { label: 'Action', w: 120 }
+                                ] : activeTab === 'vehicles' ? [
+                                    { label: '#', w: 40 },
+                                    { label: 'Vehicle Number', w: 160 },
+                                    { label: 'Price', w: 110 },
+                                    { label: 'Accidents', w: 160 },
+                                    { label: 'Action', w: 110 }
+                                ] : [
+                                    { label: '#', w: 40 },
+                                    { label: 'Login ID', w: 110 },
+                                    { label: 'Name', w: 200 },
+                                    { label: 'Email', w: 260 },
+                                    { label: 'Mobile', w: 130 },
+                                    { label: 'Status', w: 100 },
+                                    { label: 'Action', w: 180 }
+                                ]).map((col, i) => (
+                                    <Text key={i} style={[styles.colHeaderText, { width: col.w }]}>{col.label}</Text>
+                                ))}
                             </View>
 
                             {/* Rows */}
@@ -306,18 +314,18 @@ const AdminDashboard = ({ route, navigation }) => {
                                 filtered.map((t, idx) => (
                                     <View key={t.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
                                         <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                        <Text style={[styles.cell, styles.cellLoginId]}>{t.vehicle_number}</Text>
-                                        <Text style={[styles.cell, styles.cellName]}>{t.buyer_name}</Text>
-                                        <Text style={[styles.cell, styles.cellEmail]}>₹{t.price}</Text>
-                                        <View style={[styles.cell, { width: 90 }]}>
+                                        <Text style={[styles.cell, styles.cellLoginId, { width: 140 }]}>{t.vehicle_number}</Text>
+                                        <Text style={[styles.cell, styles.cellName, { width: 140 }]}>{t.buyer_name}</Text>
+                                        <Text style={[styles.cell, { width: 100, color: '#10b981' }]}>₹{t.price}</Text>
+                                        <View style={[styles.cell, { width: 100 }]}>
                                             <View style={[styles.statusBadge, t.status === 'approved' ? styles.statusActive : styles.statusWaiting]}>
                                                 <Text style={[styles.statusText, t.status === 'approved' ? { color: '#10b981' } : { color: '#f59e0b' }]}>
                                                     {t.status}
                                                 </Text>
                                             </View>
                                         </View>
-                                        <Text style={[styles.cell, { flex: 2, fontSize: 10, color: '#334155' }]} numberOfLines={1}>{t.hash_code}</Text>
-                                        <View style={[styles.cell, { width: 130 }]}>
+                                        <Text style={[styles.cell, { width: 250, fontSize: 10, color: '#334155' }]} numberOfLines={1}>{t.hash_code}</Text>
+                                        <View style={[styles.cell, { width: 120, alignItems: 'center' }]}>
                                             {t.status === 'pending' && (
                                                 <TouchableOpacity
                                                     style={[styles.actionBtn, styles.activateBtn]}
@@ -333,11 +341,11 @@ const AdminDashboard = ({ route, navigation }) => {
                                 filtered.map((v, idx) => (
                                     <View key={v.vehicle_number} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
                                         <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                        <Text style={[styles.cell, styles.cellLoginId]}>{v.vehicle_number}</Text>
-                                        <Text style={[styles.cell, { color: '#10b981' }]}>₹{v.price}</Text>
-                                        <Text style={[styles.cell, { color: '#94a3b8' }]}>{v.accidents_history || 'None'}</Text>
-                                        <View style={[styles.cell, { width: 100, alignItems: 'center' }]}>
-                                            <Text style={{ color: '#64748b', fontSize: 12 }}>View Only</Text>
+                                        <Text style={[styles.cell, styles.cellLoginId, { width: 160 }]}>{v.vehicle_number}</Text>
+                                        <Text style={[styles.cell, { width: 110, color: '#10b981' }]}>₹{v.price}</Text>
+                                        <Text style={[styles.cell, { width: 160, color: '#94a3b8' }]}>{v.accidents_history || 'None'}</Text>
+                                        <View style={[styles.cell, { width: 110, alignItems: 'center' }]}>
+                                            <Text style={{ color: '#64748b', fontSize: 11 }}>View Only</Text>
                                         </View>
                                     </View>
                                 ))
@@ -345,11 +353,11 @@ const AdminDashboard = ({ route, navigation }) => {
                                 filtered.map((u, idx) => (
                                     <View key={u.id} style={[styles.tableRow, idx % 2 === 1 && styles.tableRowAlt]}>
                                         <Text style={[styles.cell, { width: 40, color: '#64748b', fontSize: 12 }]}>{idx + 1}</Text>
-                                        <Text style={[styles.cell, styles.cellLoginId]}>{u.loginid}</Text>
-                                        <Text style={[styles.cell, styles.cellName]}>{u.name}</Text>
-                                        <Text style={[styles.cell, styles.cellEmail]}>{u.email}</Text>
-                                        <Text style={[styles.cell, styles.cellMobile]}>{u.mobile || '—'}</Text>
-                                        <View style={[styles.cell, { width: 90 }]}>
+                                        <Text style={[styles.cell, styles.cellLoginId, { width: 110 }]}>{u.loginid}</Text>
+                                        <Text style={[styles.cell, styles.cellName, { width: 200 }]}>{u.name}</Text>
+                                        <Text style={[styles.cell, styles.cellEmail, { width: 260 }]}>{u.email}</Text>
+                                        <Text style={[styles.cell, styles.cellMobile, { width: 130 }]}>{u.mobile || '—'}</Text>
+                                        <View style={[styles.cell, { width: 100 }]}>
                                             <View style={[
                                                 styles.statusBadge,
                                                 u.status === 'Active' ? styles.statusActive :
@@ -534,31 +542,41 @@ const styles = StyleSheet.create({
     statValue: { fontSize: (Platform.OS === 'web') ? 40 : 30, fontWeight: 'bold', marginBottom: 4 },
     statLabel: { color: '#64748b', fontSize: (Platform.OS === 'web') ? 14 : 12 },
 
-    // TABLE SECTION
     tableSection: {
         backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 20,
         borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)',
         overflow: 'hidden',
     },
+    // Title row
     tableHeader: {
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 18,
-        borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)', flexWrap: 'wrap', gap: 12,
+        flexDirection: 'row', alignItems: 'center', gap: 10,
+        paddingHorizontal: 16, paddingVertical: 14,
+        borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)',
     },
     tableHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     tableTitle: { color: '#fff', fontSize: (Platform.OS === 'web') ? 18 : 15, fontWeight: 'bold' },
+    // Tabs row - separate horizontal scrollable row
+    tabsScrollRow: {
+        borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)',
+    },
+    tabsRow: {
+        flexDirection: 'row', gap: 8,
+        paddingHorizontal: 16, paddingVertical: 10,
+    },
     tabs: { flexDirection: 'row', gap: 8 },
     tab: {
-        paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10,
+        paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10,
         backgroundColor: 'rgba(255,255,255,0.04)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)',
     },
     tabActive: { backgroundColor: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)' },
     tabActiveSeller: { backgroundColor: 'rgba(96,165,250,0.15)', borderColor: 'rgba(96,165,250,0.4)' },
     tabActiveTransactions: { backgroundColor: 'rgba(245,158,11,0.15)', borderColor: 'rgba(245,158,11,0.4)' },
+    tabActiveVehicles: { backgroundColor: 'rgba(139,92,246,0.15)', borderColor: 'rgba(139,92,246,0.4)' },
     tabText: { color: '#64748b', fontWeight: '600', fontSize: (Platform.OS === 'web') ? 14 : 12 },
     tabTextActive: { color: '#10b981' },
     tabTextActiveSeller: { color: '#60a5fa' },
     tabTextActiveTransactions: { color: '#f59e0b' },
+    tabTextActiveVehicles: { color: '#a78bfa' },
 
     // SEARCH
     searchBox: {
@@ -573,18 +591,20 @@ const styles = StyleSheet.create({
     // TABLE
     colHeader: {
         flexDirection: 'row', alignItems: 'center',
-        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 12,
-        backgroundColor: 'rgba(255,255,255,0.03)',
-        borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.05)',
+        paddingHorizontal: 16, paddingVertical: 12,
+        backgroundColor: 'rgba(255,255,255,0.04)',
+        borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.06)',
     },
-    colHeaderText: { flex: 1, color: '#475569', fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
+    colHeaderText: { color: '#475569', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8, paddingRight: 10 },
     tableRow: {
         flexDirection: 'row', alignItems: 'center',
-        paddingHorizontal: (Platform.OS === 'web') ? 24 : 16, paddingVertical: 14,
+        paddingHorizontal: 16, paddingVertical: 13,
         borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)',
+        minHeight: 46,
     },
-    tableRowAlt: { backgroundColor: 'rgba(255,255,255,0.01)' },
-    cell: { flex: 1, color: '#cbd5e1', fontSize: (Platform.OS === 'web') ? 14 : 12, paddingRight: 8 },
+    tableRowAlt: { backgroundColor: 'rgba(255,255,255,0.012)' },
+    // Cell: NO flex, use fixed width per column
+    cell: { color: '#cbd5e1', fontSize: (Platform.OS === 'web') ? 14 : 12, paddingRight: 10 },
     cellLoginId: { color: '#60a5fa', fontWeight: '600' },
     cellName: { color: '#e2e8f0', fontWeight: '500' },
     cellEmail: { color: '#94a3b8', fontSize: (Platform.OS === 'web') ? 13 : 11 },
