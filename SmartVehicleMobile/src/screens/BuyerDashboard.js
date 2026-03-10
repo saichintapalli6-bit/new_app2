@@ -190,7 +190,7 @@ const BuyerDashboard = ({ route, navigation }) => {
                 </View>
             </LinearGradient>
 
-            <View style={styles.tabsContainer}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsContainer}>
                 <TouchableOpacity
                     style={[styles.tab, activeTab === 'browse' && styles.activeTab]}
                     onPress={() => setActiveTab('browse')}
@@ -205,7 +205,7 @@ const BuyerDashboard = ({ route, navigation }) => {
                     <List color={activeTab === 'transactions' ? '#22d3ee' : '#94a3b8'} size={20} />
                     <Text style={[styles.tabText, activeTab === 'transactions' && styles.activeTabText]}>My Transactions</Text>
                 </TouchableOpacity>
-            </View>
+            </ScrollView>
 
             <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>{activeTab === 'browse' ? 'Available Vehicles' : 'My Transactions'}</Text>

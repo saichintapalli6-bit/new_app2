@@ -184,15 +184,17 @@ const AdminDashboard = ({ route, navigation }) => {
                     <Text style={styles.navTitle} numberOfLines={1}>Admin</Text>
                     <View style={styles.adminBadge}><Text style={styles.adminBadgeText}>Admin</Text></View>
                 </View>
-                <View style={styles.navRight}>
-                    <TouchableOpacity style={styles.refreshBtn} onPress={fetchAll}>
-                        <RefreshCcw color="#94a3b8" size={14} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
-                        <LogOut color="#ef4444" size={14} />
-                        <Text style={styles.logoutBtnText}>Logout</Text>
-                    </TouchableOpacity>
-                </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexShrink: 1 }}>
+                    <View style={styles.navRight}>
+                        <TouchableOpacity style={styles.refreshBtn} onPress={fetchAll}>
+                            <RefreshCcw color="#94a3b8" size={14} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.logoutBtn} onPress={() => navigation.navigate('Home')}>
+                            <LogOut color="#ef4444" size={14} />
+                            <Text style={styles.logoutBtnText}>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
 
             <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
